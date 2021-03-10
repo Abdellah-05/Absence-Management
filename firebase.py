@@ -13,9 +13,9 @@ firebaseConfig = {
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
-
-#-- authentification
 """
+#-- authentification
+
 auth = firebase.auth()
 email = input('Email : ')
 password = input('password : ')
@@ -23,9 +23,9 @@ if auth.sign_in_with_email_and_password(email,password) :
       print('valide')
 else:
       print('no')
-"""
 
-"""
+
+
 #-- database
 db = firebase.database()
 Filiers_Emploi = {

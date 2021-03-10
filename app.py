@@ -1,7 +1,7 @@
 ## python -m http.server
 ## from the output folder to open http on 8000 port
 
-from flask import Flask, render_template, request,Response
+from flask import Flask, render_template, request,Response, redirect
 import os
 from werkzeug.utils import secure_filename
 #import recog
@@ -13,8 +13,43 @@ app = Flask(__name__)
 #app.config['UPLOAD_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\input_fold'
 #app.config['OUTPUT_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\output_fold'
 
+import pyrebase
+
+firebaseConfig = {
+    "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
+    "authDomain": "absence-management-8e00e.firebaseapp.com",
+    "databaseURL": "https://absence-management-8e00e-default-rtdb.firebaseio.com",
+    "projectId": "absence-management-8e00e",
+    "storageBucket": "absence-management-8e00e.appspot.com",
+    "messagingSenderId": "266501909984",
+    "appId": "1:266501909984:web:c0a3c895b7bc28449c0f85",
+    "measurementId": "G-XE1KJ3PJLL"
+  };
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+
+
+#-- authentification
+
+auth = firebase.auth()
+
+@app.route('/', methods = ['GET'])
+def loginGet():    
+   return render_template('login.html')
+
+@app.route('/', methods = ['POST'] )
+def loginPost():
+    email = request.form['email']
+    password = request.form['password']
+    #login_user(adminEmail)
+    try:
+        auth.sign_in_with_email_and_password(email,password)
+        return redirect('/home')
+    except:
+        return render_template('login.html')
+
 ### front page 
-@app.route('/')
+@app.route('/home')
 def front_page():
    return render_template('home.html')
 
