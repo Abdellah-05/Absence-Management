@@ -12,7 +12,7 @@ import imutils
 class Vidcamera1(object):
     def __init__(self):
         print("[INFO] loading encodings...")
-        self.data11 = pickle.loads(open('encodings', "rb").read())
+        self.data11 = pickle.loads(open('encodings.pickle', "rb").read())
         self.inti = dict(Counter(self.data11["names"]))
         self.inti['Unknown'] = 1
         self.timer = 0
@@ -21,7 +21,6 @@ class Vidcamera1(object):
         self.clock = pygame.time.Clock()
         self.video = cv2.VideoCapture(0)
         self.pr=[]
-        self.cpt = 0
         print(type(self.data11["encodings"]))
     
     ## processing the frame.
@@ -53,11 +52,10 @@ class Vidcamera1(object):
             print(confidence_val)
             #print(face_locations)
             
-            if confidence_val>78:
+            if confidence_val>90:
                 face_names.append(name+': '+str(confidence_val))
                 if name not in self.pr and name.lower() != 'unknown':
                     self.pr.append(name)
-                    self.cpt += 1
             else:
                 face_names.append('Unknown1 : '+str(confidence_val))
         # Display the results
@@ -71,7 +69,6 @@ class Vidcamera1(object):
             #cv2.imwrite('01.jpg',frame)
         
         return frame
-      
 
     #Main program loop:
     def framing(self):
@@ -95,9 +92,7 @@ class Vidcamera1(object):
           output = self.image
           #print('frame')
           #We set our clock to tick 60 times a second, which limits the frame rate to that amount:
-          self.clock.tick(1000)
+          self.clock.tick(100000)
           #pygame.display.flip()
           ret, jpeg = cv2.imencode('.jpg', output)
           return jpeg.tobytes()
-    def myList():
-            return self.pr

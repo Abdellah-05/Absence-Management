@@ -8,7 +8,6 @@ from werkzeug.utils import secure_filename
 from own_pc import Vidcamera1
 
 
-
 app = Flask(__name__)
 
 #app.config['UPLOAD_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\input_fold'
@@ -17,8 +16,7 @@ app = Flask(__name__)
 ### front page 
 @app.route('/')
 def front_page():
-    
-    return render_template('home.html')
+   return render_template('home.html')
 
 ## for own computer camera processing
 @app.route('/video_1')
@@ -33,20 +31,20 @@ def gen_1(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
     print('end of gen camera method')
 
-    
-
-    
-    
-
 @app.route('/video_feed_1')
 def video_feed_1():
     print('video_feed method')
     aa=gen_1(Vidcamera1())
-    
-    
     print('video_feed method 2')
     
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/testlogin',methods=["GET",'POST'])
+def testlogin():
+    email=request.form.get("email")
+    password=request.form.get("password")
+    return email,password
 
 if __name__ == '__main__':
    app.run(debug = True)
