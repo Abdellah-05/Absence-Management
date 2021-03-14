@@ -108,7 +108,7 @@ class Vidcamera1(object):
           output = self.image
           #print('frame')
           #We set our clock to tick 60 times a second, which limits the frame rate to that amount:
-          self.clock.tick(100000)
+          self.clock.tick(1000)
           #pygame.display.flip()
           ret, jpeg = cv2.imencode('.jpg', output)
           return jpeg.tobytes(), self.pr

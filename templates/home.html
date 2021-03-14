@@ -1,55 +1,108 @@
 <!DOCTYPE html>
-<html>
-<head>
-<script>
-function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+  <html>
+    <head>
+      <!--
+      <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+      -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/static/css/style_home.css">
+      <!-------------------------------------Material_Design_Bootstrap------------------------------------->
+      <link href="/static/css/mdb.min.css" rel="stylesheet">
+      
+      <!-------------------------------------/Material_Design_Bootstrap------------------------------------->
+      <script src="/static/js/jquery-3.5.1.min.js"></script>
+      <script src="/static/js/bootstrap.min.js"></script>
+      <script>
+        $(document).ready(function(){
+            $("#done").hide();
+            $("#start").click(function(){
+              $("#done").show(10000);
+            });
+        });
+        </script>
+      
+      <title>Face Recog WebApp</title>
+      
+    </head>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav_bar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <body>
 
-            reader.onload = function (e) {
-                $('#blah')
-                    .attr('src', e.target.result)
-                    .width(150)
-                    .height(200);
-            };
+      <h3 class="tit"><strong>BIENVENUE dans la gestion d'absence à EST ESSAOUIRA</strong></h3>
+      <div class="place1" >
+        <img id="bg" src="">
+        <form action="/home" method="GET">
+          <input type="submit" class="btn btn-info" value="Done!" id="done">
+        </form>
+        
+      </div>
 
-            reader.readAsDataURL(input.files[0]);
+      <div class="place2">
+        <div >
+          <img src="/static/images/ESTE.png" alt="" style="width: 100%; height: 100%;">
+        </div>
+        <div id="pfmd">
+          <div class="mb-3">
+            <label>&nbsp;Professeur&nbsp;: </label>
+            <p type="text" name="prof"></p>
+          </div>
+          <div class="mb-3">
+            <label >&nbsp;Filiére&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : </label>
+            <p type="text" name="filiere"></p>
+          </div>
+          <div class="mb-3">
+            <label >&nbsp;Module&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+            <p type="text" name="module"></p>
+          </div>
+          <div class="mb-3">
+            <label >&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+            <p type="text" name="date"></p>
+          </div>
+        </div>
+        
+      </div>
+
+<!--
+      <div class="col-md-4 col-md-offset-4">
+      <div class="container">
+      <div class="abc" align="left">
+      <h1><strong>Face Recognition WebApp</strong></h1>
+      </br></br>
+      <form action = "/video_1" method = "GET">
+        <input type="submit" class="btn btn-info" value="Start">
+      </form>
+      </div>
+      </div>
+      </div>
+-->
+      <div class="place3">
+        <input type="submit" class="btn btn-info" value="Start" id="start">
+      </div>
+      <script>
+        //{{ url_for('video_feed_1') }}
+        document.getElementById("start").onclick = change;
+        function change() {
+          document.getElementById("bg").setAttribute('src',"{{ url_for('video_feed_1') }}")
         }
-    }
-</script>
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<title>Face Recog WebApp</title>
-<!--[if IE]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<style>
-  article, aside, figure, footer, header, hgroup, 
-  menu, nav, section { display: block; }
-  body {
-  background-color: grey;
-}
-</style>
-</head>
-<body>
-
-<div class="col-md-4 col-md-offset-4">
-<div class="container">
-<div class="abc" align="left">
-<h1><strong>Face Recognition WebApp</strong></h1>
-</br></br>
-<form action = "/video_1" method = "GET">
-	<input type="submit" class="btn btn-info" value="Start">
-</form>
-</div>
-</div>
-</div>
-
-</body>
+      </script>
+      
+    </body>
 </html>

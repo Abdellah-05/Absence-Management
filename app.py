@@ -24,7 +24,7 @@ firebaseConfig = {
     "messagingSenderId": "266501909984",
     "appId": "1:266501909984:web:c0a3c895b7bc28449c0f85",
     "measurementId": "G-XE1KJ3PJLL"
-  };
+  }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
@@ -94,9 +94,6 @@ def video_feed_1():
     print('video_feed method 2')
     
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-
 
 
 if __name__ == '__main__':
