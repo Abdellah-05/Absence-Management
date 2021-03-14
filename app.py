@@ -40,6 +40,11 @@ dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
 
+time=""
+#------------------------------function_database---------------------------# 
+#def push_in_db(L):
+
+
 #-- authentification
 
 auth = firebase.auth()
@@ -55,33 +60,48 @@ def loginPost():
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
-        return redirect('/home')
+
+        if int(heur) == 7 and int(minutes) >= 45 :
+            time="08-12"
+            return redirect('/home')
+        if int(heur) == 13 and int(minutes) >= 45 :
+            time="14-18"
+            return redirect('/home')
+        return redirect('/no_seance')
     except:
         return render_template('login.html')
+presence = []
 
 ### front page 
 @app.route('/home')
 def front_page():
-   return render_template('home.html')
+    return render_template('home.html')
+
+@app.route('/no_seance')
+def no_seance():
+    return render_template("no_seance.html")
+
+
+### push in database 
+@app.route('/done')
+def push():
+    print("zdalalaly",presence)
+    return render_template('home.html')
 
 ## for own computer camera processing
 @app.route('/video_1')
 def index_1():
     return render_template('index.html')
 
-def gen_1(camera):
-    
-    absence = []
+
+def gen_1(camera):    
     while True:
         frame, vv = camera.framing()               
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-        if vv not in absence and len(vv) > 6:        
-            absence.append(vv)
-        print('============================', absence)
-        
-        db.child("absence").child(dateA).child(timeA).set(absence)
-     
+        if vv not in presence and len(vv) > 6:        
+            presence.append(vv) 
+    #db.child("absence").child(dateA).child(timeA).set(absence) 
 
 
 

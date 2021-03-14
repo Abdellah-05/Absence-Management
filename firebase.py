@@ -112,12 +112,21 @@ absence = ["abdou", "walid"]
 
 db.child("absence").child(dateA).child(timeA).set(absence)
 """
-prf = db.child("Profs").get()
+"""prf = db.child("Profs").get()
 
 for p in prf.each():
       print(p.val())
 
 
 def validate(day, mail):
-    prof =  db.child("absence").child(dateA).child('18h12').get().val()
+    prof =  db.child("absence").child(dateA).child('18h12').get().val()"""
     
+presence=["DAMOU-Walid"]
+absence=[]
+etudiants=db.child("Filiers_Etudiants").child("IDSD-2").child("Etudiants").get().val()
+for e in etudiants:
+  if e not in presence:
+    absence.append(e)
+print(absence)
+db.child("absence").child(dateA).child(timeA).set(absence)
+print('done')
