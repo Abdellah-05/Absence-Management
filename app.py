@@ -24,7 +24,7 @@ firebaseConfig = {
     "messagingSenderId": "266501909984",
     "appId": "1:266501909984:web:c0a3c895b7bc28449c0f85",
     "measurementId": "G-XE1KJ3PJLL"
-  };
+  }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
@@ -75,11 +75,7 @@ def video_feed_1():
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/testlogin',methods=["GET",'POST'])
-def testlogin():
-    email=request.form.get("email")
-    password=request.form.get("password")
-    return email,password
+
 
 if __name__ == '__main__':
    app.run(debug = True)

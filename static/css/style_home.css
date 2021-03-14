@@ -1,0 +1,60 @@
+html,body{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 113, 88)
+}
+article, aside, figure, footer, header, hgroup, menu, nav, section { 
+    display: block; 
+}
+.nav_bar{
+    position: fixed;
+    width: 100%;
+    margin-top: 0%;
+}
+.place1{
+    /*border: 2px solid rgb(0, 0, 0);*/
+    height: 80%;
+    width: 55%;
+    float: left;
+    margin: 2%;
+    margin-top: 7%;
+}
+.place2{
+    /*border: 2px solid rgb(0, 0, 0);*/
+    height: 70%;
+    width: 30%;
+    float: right;
+    margin: 2%;
+    margin-top: 7%;
+}
+.place3{
+    /*border: 2px solid rgb(0, 0, 0);*/
+    height: 5%;
+    width: 15%;
+    float: right;
+    margin-right: 5%;
+}
+.tit {
+    position:absolute;
+    margin-top: 4%;
+    margin-left: 3%;
+}
+
+
+div label{
+    font-size: large;
+    font-weight: bold;
+}
+#pfmd{
+    margin-top: 8%;
+}
+
+#myBtn{
+
+    width: 100%;
+}
+#done{
+    margin-left: 60%;
+    margin-top: 6%;
+    width: 40%;
+}
