@@ -36,27 +36,32 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
+jourName = "Monday"
+heur = "13"
+minutes = "48"
+
+
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
 
-
+absence=[]
+#timeSeance = ""
+presence = []
+#mailProf = ""
+matiereName = ""
+filierName= ""
+ProfName = ""
 
 #------------------------------function_database---------------------------# 
 def push_in_db(L,filiere):
     etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
     for e in etudiants:
-        if e not in presence:
+        if e not in L:
             absence.append(e)
     db.child("absence").child(dateA).child(timeA).set(absence)
 
-absence=[]
-timeSeance = ""
-presence = []
-mailProf = ""
-matiereName = ""
-filierName= ""
-ProfName = ""
+
 
 #-- authentification
 
@@ -73,12 +78,14 @@ def loginPost():
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
-        mailProf = email
+        print('----------------------- real mail')
+        session["mailProf"] = email
+        print(session["mailProf"])
         if int(heur) == 7 and int(minutes) >= 45 :
-            timeSeance="08-12"
+            session["timeSeance"]="08-12"
             return redirect('/home')
         if int(heur) == 13 and int(minutes) >= 45 :
-            timeSeance="14-18"
+            session["timeSeance"]="14-18"
             return redirect('/home')
         return redirect('/no_seance')
     except:
@@ -86,11 +93,15 @@ def loginPost():
 
 
 def Seance(mail, jour, temps):
-      
+      print('-----------------------------------------------------------')
+      prin(mail)
+      print(jour)
+      print(temps)
+      print('--------------------------------------------------------')
       filiersEmploi = db.child('Filiers_Emploi').get()
       prf = db.child("Profs").get()
-      nomProf = ""
-      tps = timeSeance.split('-')
+      nomProf = "" 
+      tps = temps.split('-')
       SeanceTime = "De " + tps[0] + ":00 à " + tps[1] + ":00"
       for p in prf.each():
           if p.val()["E-mail"] == mail:
@@ -115,7 +126,7 @@ def front_page():
     if Seance(mailProf, jourName, timeSeance) == False :
         return redirect('/no_seance')
     
-    matiereName, filierName, ProfName , SeanceTime = Seance(mailProf, jourName, timeSeance)
+    matiereName, filierName, ProfName , SeanceTime = Seance(session["mailProf"], jourName, session["timeSeance"])
      
     return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
 
@@ -129,7 +140,8 @@ def no_seance():
 ### push in database 
 @app.route('/done')
 def push():
-    print("zdalalaly",presence)
+    
+    push_in_db(presence, filierName)
     return render_template('home.html')
 
 ## for own computer camera processing
