@@ -1,5 +1,6 @@
 import pyrebase
 
+
 firebaseConfig = {
     "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
     "authDomain": "absence-management-8e00e.firebaseapp.com",
@@ -12,7 +13,7 @@ firebaseConfig = {
   };
 
 firebase = pyrebase.initialize_app(firebaseConfig)
-
+db = firebase.database()
 """
 #-- authentification
 
@@ -60,12 +61,12 @@ db.child("Filiers_Emploi").child("IDSD-2").set(Filiers_Emploi)
 
 
 Profs = {
-  "Nom" : "Guezzaz",
-  "Prenom" : "Azidine",
+  "Nom" : "GOUNANE",
+  "Prenom" : "Said",
   "FiliersEnseignes" : ["IDSD-2", "IDSD-1", "ISIL"],
-  "E-mail" : "a.guezzaz@gmail.com"
+  "E-mail" : "s.gounane@gmail.com"
 }
-db.child("Profs").child("Guezzaz-Azidine").set(Profs)
+db.child("Profs").child("GOUNANE-Said").set(Profs)
 
 
 Filiers_Etudiants = {
@@ -91,3 +92,59 @@ db.child("Filiers_Etudiants").child("IDSD-2").set(Filiers_Etudiants)
 #print(Filiers_Etudiant.key())
 
 """
+import datetime
+db = firebase.database()
+DATE = datetime.datetime.now()
+
+"""
+
+absence = ["abdou", "walid"]
+
+db.child("absence").child(dateA).child(timeA).set(absence)
+
+
+prf = db.child("Profs").get()
+for p in prf.each():
+      print(p.val()["E-mail"])
+      print(p.val()["FiliersEnseignes"])
+      print(p.key())
+
+jour = DATE.strftime("%d")
+mois = DATE.strftime("%m")
+annee = DATE.year
+heur = DATE.strftime("%H")
+minutes = DATE.strftime("%M")
+jourName = DATE.strftime("%A")
+
+dateA = jour + '-' + mois + '-' + str(annee)
+timeA = heur + 'h' + minutes
+
+
+
+     
+      
+
+def Seance(mail, jour, temps):
+      
+      filiersEmploi = db.child('Filiers_Emploi').get()
+      for filier in filiersEmploi.each():
+            try:  
+              nomFilier = filier.key()              
+              matiere, ensignantMail = filier.val()[jour][temps][0], filier.val()[jour][temps][1]
+              if mail == ensignantMail :
+                    return matiere, nomFilier 
+
+            except:
+              return False
+      return False
+
+
+if Seance('a.guezzaz@gmail.com', 'Monday', '14-18') != False :      
+      a, b = Seance('a.guezzaz@gmail.com', 'Monday', '14-18')
+      print(a)
+      print(b)
+else:
+      print('ok')
+"""
+    
+   
