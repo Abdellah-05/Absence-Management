@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 ## python -m http.server
 ## from the output folder to open http on 8000 port
 
+=======
+>>>>>>> abdou
 from flask import Flask, render_template, request,Response, redirect, session
 import os
 from werkzeug.utils import secure_filename
@@ -39,6 +42,19 @@ jourName = DATE.strftime("%A")
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
+<<<<<<< HEAD
+=======
+
+timeSeance = ""
+presence = []
+mailProf = ""
+matiereName = ""
+filierName= ""
+ProfName = ""
+#------------------------------function_database---------------------------# 
+#def push_in_db(L):
+
+>>>>>>> abdou
 
 #-- authentification
 
@@ -55,31 +71,95 @@ def loginPost():
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
-        return redirect('/home')
+        mailProf = email
+        if int(heur) == 7 and int(minutes) >= 45 :
+            timeSeance="08-12"
+            return redirect('/home')
+        if int(heur) == 13 and int(minutes) >= 45 :
+            timeSeance="14-18"
+            return redirect('/home')
+        return redirect('/no_seance')
     except:
         return render_template('login.html')
+
+
+
+def Seance(mail, jour, temps):
+      
+      filiersEmploi = db.child('Filiers_Emploi').get()
+      prf = db.child("Profs").get()
+      nomProf = ""
+      tps = timeSeance.split('-')
+      SeanceTime = "De " + tps[0] + ":00 à " + tps[1] + ":00"
+      for p in prf.each():
+          if p.val()["E-mail"] == mail:
+              nomProf = p.key()
+    
+      for filier in filiersEmploi.each():
+            try:  
+              nomFilier = filier.key()              
+              matiere, ensignantMail = filier.val()[jour][temps][0], filier.val()[jour][temps][1]
+
+              if mail == ensignantMail :
+                    return matiere, nomFilier, nomProf, SeanceTime
+
+            except:
+              return False
+      return False
 
 ### front page 
 @app.route('/home')
 def front_page():
+    
+    if Seance(mailProf, jourName, timeSeance) == False :
+        return redirect('/no_seance')
+    
+    matiereName, filierName, ProfName , SeanceTime = Seance(mailProf, jourName, timeSeance)
+     
+    return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
+
+
+
+@app.route('/no_seance')
+def no_seance():
+    return render_template("no_seance.html")
+
+
+### push in database 
+@app.route('/done')
+def push():
+    print("zdalalaly",presence)
     return render_template('home.html')
-   
 
 ## for own computer camera processing
 @app.route('/video_1')
 def index_1():
     return render_template('index.html')
 
+<<<<<<< HEAD
 def gen_1(camera):    
     absence = []
+=======
+
+def gen_1(camera):    
+>>>>>>> abdou
     while True:
         frame, vv = camera.framing()               
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+<<<<<<< HEAD
         if vv not in absence and len(vv) > 6:        
             absence.append(vv)
  
      
+=======
+        if vv not in presence and len(vv) > 6:        
+            presence.append(vv) 
+    #db.child("absence").child(dateA).child(timeA).set(absence) 
+
+
+
+>>>>>>> abdou
 
 @app.route('/video_feed_1')
 def video_feed_1():
@@ -91,5 +171,9 @@ def video_feed_1():
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> abdou
 if __name__ == '__main__':
    app.run(debug = True)

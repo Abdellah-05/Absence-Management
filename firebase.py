@@ -108,7 +108,7 @@ for p in prf.each():
       print(p.val()["E-mail"])
       print(p.val()["FiliersEnseignes"])
       print(p.key())
-"""
+
 jour = DATE.strftime("%d")
 mois = DATE.strftime("%m")
 annee = DATE.year
@@ -120,12 +120,6 @@ dateA = jour + '-' + mois + '-' + str(annee)
 timeA = heur + 'h' + minutes
 
 
-<<<<<<< HEAD
-=======
-db.child("absence").child(dateA).child(timeA).set(absence)
-"""
-"""prf = db.child("Profs").get()
->>>>>>> 5b8c400e94985ff33df75187507dfec3ab473bdb
 
      
       
@@ -151,6 +145,6 @@ if Seance('a.guezzaz@gmail.com', 'Monday', '14-18') != False :
       print(b)
 else:
       print('ok')
-#def validate(day, mail): prof =  db.child("absence").child(dateA).child('18h12').get().val()
+"""
     
    
