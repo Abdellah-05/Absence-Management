@@ -120,6 +120,12 @@ dateA = jour + '-' + mois + '-' + str(annee)
 timeA = heur + 'h' + minutes
 
 
+<<<<<<< HEAD
+=======
+db.child("absence").child(dateA).child(timeA).set(absence)
+"""
+"""prf = db.child("Profs").get()
+>>>>>>> 5b8c400e94985ff33df75187507dfec3ab473bdb
 
      
       

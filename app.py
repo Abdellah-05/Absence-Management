@@ -62,15 +62,15 @@ def loginPost():
 ### front page 
 @app.route('/home')
 def front_page():
-   return render_template('home.html')
+    return render_template('home.html')
+   
 
 ## for own computer camera processing
 @app.route('/video_1')
 def index_1():
     return render_template('index.html')
 
-def gen_1(camera):
-    
+def gen_1(camera):    
     absence = []
     while True:
         frame, vv = camera.framing()               
@@ -78,13 +78,8 @@ def gen_1(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         if vv not in absence and len(vv) > 6:        
             absence.append(vv)
-        #print('============================', absence)
-    print('----------------------------------------------------------', absence)  
-    #db.child("absence").child(dateA).child(timeA).set(absence)
+ 
      
-
-
-
 
 @app.route('/video_feed_1')
 def video_feed_1():
