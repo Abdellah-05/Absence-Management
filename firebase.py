@@ -146,7 +146,7 @@ if Seance('a.guezzaz@gmail.com', 'Monday', '14-18') != False :
 else:
       print('ok')
 """
-timeSeance = "08-12"
+"""
 def Seance(mail, jour, temps):
       
       filiersEmploi = db.child('Filiers_Emploi').get()
@@ -169,10 +169,15 @@ def Seance(mail, jour, temps):
             except:
               return False
       return False
+"""
+    
+    #return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
 
-x, y, z, p = Seance("s.gounane@gmail.com", "Monday", "08-12")
+x='w'
+def set():
+  global x
+  x='walid'
 
 print(x)
-print(y)
-print(z)
-print(p)
+set()
+print(x)
