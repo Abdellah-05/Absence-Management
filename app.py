@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ## python -m http.server
 ## from the output folder to open http on 8000 port
 
-=======
->>>>>>> abdou
 from flask import Flask, render_template, request,Response, redirect, session
 import os
 from werkzeug.utils import secure_filename
@@ -42,14 +39,9 @@ jourName = DATE.strftime("%A")
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-time=""
-absence=[]
-presence = []
-email_=''
+
+
 #------------------------------function_database---------------------------# 
 def push_in_db(L,filiere):
     etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
@@ -57,18 +49,14 @@ def push_in_db(L,filiere):
         if e not in presence:
             absence.append(e)
     db.child("absence").child(dateA).child(timeA).set(absence)
-=======
+
+absence=[]
 timeSeance = ""
 presence = []
 mailProf = ""
 matiereName = ""
 filierName= ""
 ProfName = ""
-#------------------------------function_database---------------------------# 
-#def push_in_db(L):
-
->>>>>>> abdou
->>>>>>> 3bfdacad7bc86d2552cd22f123e81338f2e53bcb
 
 #-- authentification
 
@@ -85,11 +73,7 @@ def loginPost():
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
-<<<<<<< HEAD
-        email_=email
-=======
         mailProf = email
->>>>>>> 3bfdacad7bc86d2552cd22f123e81338f2e53bcb
         if int(heur) == 7 and int(minutes) >= 45 :
             timeSeance="08-12"
             return redirect('/home')
@@ -99,9 +83,6 @@ def loginPost():
         return redirect('/no_seance')
     except:
         return render_template('login.html')
-
-<<<<<<< HEAD
-=======
 
 
 def Seance(mail, jour, temps):
@@ -126,7 +107,6 @@ def Seance(mail, jour, temps):
             except:
               return False
       return False
->>>>>>> 3bfdacad7bc86d2552cd22f123e81338f2e53bcb
 
 ### front page 
 @app.route('/home')
@@ -157,30 +137,16 @@ def push():
 def index_1():
     return render_template('index.html')
 
-<<<<<<< HEAD
-def gen_1(camera):    
-    absence = []
-=======
+
 
 def gen_1(camera):    
->>>>>>> abdou
     while True:
         frame, vv = camera.framing()               
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-<<<<<<< HEAD
-        if vv not in absence and len(vv) > 6:        
-            absence.append(vv)
- 
-     
-=======
         if vv not in presence and len(vv) > 6:        
             presence.append(vv) 
     #db.child("absence").child(dateA).child(timeA).set(absence) 
-
-
-
->>>>>>> abdou
 
 @app.route('/video_feed_1')
 def video_feed_1():
@@ -191,10 +157,5 @@ def video_feed_1():
     
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> abdou
 if __name__ == '__main__':
    app.run(debug = True)
