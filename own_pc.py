@@ -20,7 +20,7 @@ class Vidcamera1(object):
         self.image = ""
         self.clock = pygame.time.Clock()
         self.video = cv2.VideoCapture(0)
-        self.pr=[]
+        self.pr=''
         print(type(self.data11["encodings"]))
     
     ## processing the frame.
@@ -53,11 +53,11 @@ class Vidcamera1(object):
             #print(face_locations)
             
             if confidence_val>90:
-                face_names.append(name+': '+str(confidence_val))
-                if name not in self.pr and name.lower() != 'unknown':
-                    self.pr.append(name)
+                face_names.append(name+':'+str(confidence_val))
+                #if name not in self.pr and name.lower() != 'unknown':
+                 #   self.pr.append(name)
             else:
-                face_names.append('Unknown1 : '+str(confidence_val))
+                face_names.append('Unknown1_Unknown:'+str(confidence_val))
         # Display the results
         for (top, right, bottom, left), name in zip(face_locations, face_names):
             # Draw a box around the face
@@ -65,8 +65,24 @@ class Vidcamera1(object):
             # Draw a label with a name below the face
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            #cv2.imwrite('01.jpg',frame)
+
+            #-- traitement des nomes des étudiants
+            if name.lower() == 'unknown':
+                  Personne = 'Unknown ?'
+            if name.lower() != 'unknown':
+                  Prenom = name.split('_')[0][0] + '.'
+                  firstName = name.split('_')[0]
+                  print('----------------------------------------------------', name)
+                  if name.split(':')[0] == 'unknown':
+                        name = "unknown_unknown:" + name.split(':')[1]
+                  Nom = name.split('_')[1].split(':')[0]
+                  Occ = name.split('_')[1].split(':')[1] + '%'
+                  Personne = Prenom + Nom + ' ' + Occ
+                  if Nom.lower() != 'unknown' :
+                        self.pr = Nom + '-' + firstName                     
+            cv2.putText(frame, Personne, (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
+            
+            
         
         return frame
 
@@ -95,4 +111,4 @@ class Vidcamera1(object):
           self.clock.tick(100000)
           #pygame.display.flip()
           ret, jpeg = cv2.imencode('.jpg', output)
-          return jpeg.tobytes()
+          return jpeg.tobytes(), self.pr

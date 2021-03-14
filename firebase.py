@@ -1,5 +1,6 @@
 import pyrebase
 
+
 firebaseConfig = {
     "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
     "authDomain": "absence-management-8e00e.firebaseapp.com",
@@ -91,3 +92,32 @@ db.child("Filiers_Etudiants").child("IDSD-2").set(Filiers_Etudiants)
 #print(Filiers_Etudiant.key())
 
 """
+import datetime
+db = firebase.database()
+DATE = datetime.datetime.now()
+
+
+jour = DATE.strftime("%d")
+mois = DATE.strftime("%m")
+annee = DATE.year
+heur = DATE.strftime("%H")
+minutes = DATE.strftime("%M")
+jourName = DATE.strftime("%A")
+
+dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
+timeA = str(heur) + 'h' + str(minutes)
+"""
+
+absence = ["abdou", "walid"]
+
+db.child("absence").child(dateA).child(timeA).set(absence)
+"""
+prf = db.child("Profs").get()
+
+for p in prf.each():
+      print(p.val())
+
+
+def validate(day, mail):
+    prof =  db.child("absence").child(dateA).child('18h12').get().val()
+    
