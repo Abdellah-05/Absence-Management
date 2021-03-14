@@ -146,8 +146,38 @@ if Seance('a.guezzaz@gmail.com', 'Monday', '14-18') != False :
 else:
       print('ok')
 """
+"""
+def Seance(mail, jour, temps):
+      
+      filiersEmploi = db.child('Filiers_Emploi').get()
+      prf = db.child("Profs").get()
+      nomProf = ""
+      tps = timeSeance.split('-')
+      SeanceTime = "De " + tps[0] + ":00 à " + tps[1] + ":00"
+      for p in prf.each():
+          if p.val()["E-mail"] == mail:
+              nomProf = p.key()
     
-<<<<<<< HEAD
-=======
-   
->>>>>>> 3bfdacad7bc86d2552cd22f123e81338f2e53bcb
+      for filier in filiersEmploi.each():
+            try:  
+              nomFilier = filier.key()              
+              matiere, ensignantMail = filier.val()[jour][temps][0], filier.val()[jour][temps][1]
+
+              if mail == ensignantMail :
+                    return matiere, nomFilier, nomProf, SeanceTime
+
+            except:
+              return False
+      return False
+"""
+    
+    #return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
+
+x='w'
+def set():
+  global x
+  x='walid'
+
+print(x)
+set()
+print(x)

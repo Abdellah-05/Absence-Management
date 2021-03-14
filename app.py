@@ -40,23 +40,23 @@ dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
 
-
-
-#------------------------------function_database---------------------------# 
-def push_in_db(L,filiere):
-    etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
-    for e in etudiants:
-        if e not in presence:
-            absence.append(e)
-    db.child("absence").child(dateA).child(timeA).set(absence)
-
 absence=[]
 timeSeance = ""
 presence = []
-mailProf = ""
+mailProf =""
 matiereName = ""
 filierName= ""
 ProfName = ""
+
+#------------------------------function_database---------------------------# 
+def push_in_db(L,filiere):
+    global absence
+    etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
+    for e in etudiants:
+        if e not in L:
+            absence.append(e)
+    db.child("absence").child(dateA).child(timeSeance).set(absence)
+
 
 #-- authentification
 
@@ -68,12 +68,15 @@ def loginGet():
 
 @app.route('/', methods = ['POST'] )
 def loginPost():
+    global mailProf
+    global timeSeance
     email = request.form['email']
     password = request.form['password']
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
         mailProf = email
+        
         if int(heur) == 7 and int(minutes) >= 45 :
             timeSeance="08-12"
             return redirect('/home')
@@ -86,21 +89,18 @@ def loginPost():
 
 
 def Seance(mail, jour, temps):
-      
       filiersEmploi = db.child('Filiers_Emploi').get()
       prf = db.child("Profs").get()
       nomProf = ""
-      tps = timeSeance.split('-')
+      tps = temps.split('-')
       SeanceTime = "De " + tps[0] + ":00 à " + tps[1] + ":00"
       for p in prf.each():
           if p.val()["E-mail"] == mail:
               nomProf = p.key()
-    
       for filier in filiersEmploi.each():
             try:  
               nomFilier = filier.key()              
               matiere, ensignantMail = filier.val()[jour][temps][0], filier.val()[jour][temps][1]
-
               if mail == ensignantMail :
                     return matiere, nomFilier, nomProf, SeanceTime
 
@@ -111,7 +111,7 @@ def Seance(mail, jour, temps):
 ### front page 
 @app.route('/home')
 def front_page():
-    
+    global filierName
     if Seance(mailProf, jourName, timeSeance) == False :
         return redirect('/no_seance')
     
@@ -129,7 +129,7 @@ def no_seance():
 ### push in database 
 @app.route('/done')
 def push():
-    print("zdalalaly",presence)
+    push_in_db(presence,filierName)
     return render_template('home.html')
 
 ## for own computer camera processing
