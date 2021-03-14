@@ -78,9 +78,9 @@ def gen_1(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         if vv not in absence and len(vv) > 6:        
             absence.append(vv)
-        print('============================', absence)
-        
-        db.child("absence").child(dateA).child(timeA).set(absence)
+        #print('============================', absence)
+    print('----------------------------------------------------------', absence)  
+    #db.child("absence").child(dateA).child(timeA).set(absence)
      
 
 
