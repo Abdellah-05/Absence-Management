@@ -41,9 +41,16 @@ timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
 
 time=""
+absence=[]
+presence = []
+email_=''
 #------------------------------function_database---------------------------# 
-#def push_in_db(L):
-
+def push_in_db(L,filiere):
+    etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
+    for e in etudiants:
+        if e not in presence:
+            absence.append(e)
+    db.child("absence").child(dateA).child(timeA).set(absence)
 
 #-- authentification
 
@@ -60,7 +67,7 @@ def loginPost():
     #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
-
+        email_=email
         if int(heur) == 7 and int(minutes) >= 45 :
             time="08-12"
             return redirect('/home')
@@ -70,7 +77,7 @@ def loginPost():
         return redirect('/no_seance')
     except:
         return render_template('login.html')
-presence = []
+
 
 ### front page 
 @app.route('/home')
