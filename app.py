@@ -36,10 +36,9 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
-jourName = "Monday"
-heur = "13"
+jourName = "Thursday"
 minutes = "48"
-
+heur = "07"
 
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -60,6 +59,9 @@ def push_in_db(L,filiere):
     for e in etudiants:
         if e not in L:
             absence.append(e)
+    print('---------------------------------------------------------------------')
+    print(timeSeance)
+    print(dateA)
     db.child("absence").child(dateA).child(timeSeance).set(absence)
 
 
@@ -83,10 +85,10 @@ def loginPost():
         mailProf = email
         
         if int(heur) == 7 and int(minutes) >= 45 :
-            session["timeSeance"]="08-12"
+            timeSeance="08-12"
             return redirect('/home')
         if int(heur) == 13 and int(minutes) >= 45 :
-            session["timeSeance"]="14-18"
+            timeSeance="14-18"
             return redirect('/home')
         return redirect('/no_seance')
     except:
@@ -120,7 +122,7 @@ def front_page():
     if Seance(mailProf, jourName, timeSeance) == False :
         return redirect('/no_seance')
     
-    matiereName, filierName, ProfName , SeanceTime = Seance(session["mailProf"], jourName, session["timeSeance"])
+    matiereName, filierName, ProfName , SeanceTime = Seance(mailProf, jourName, timeSeance)
      
     return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
 
