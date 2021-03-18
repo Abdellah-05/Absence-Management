@@ -164,5 +164,27 @@ def video_feed_1():
     
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+
+@app.route('/students')
+def Students():
+    return render_template('students.html')
+
+@app.route('/prof')
+def Prof():
+    return render_template('prof.html')
+
+
+
+
+
+
+
 if __name__ == '__main__':
    app.run(debug = True)
