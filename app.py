@@ -36,6 +36,10 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
+jourName = "Thursday"
+minutes = "48"
+heur = "07"
+
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
@@ -156,6 +160,28 @@ def video_feed_1():
     print('video_feed method 2')
     
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+
+@app.route('/students')
+def Students():
+    return render_template('students.html')
+
+@app.route('/prof')
+def Prof():
+    return render_template('prof.html')
+
+
+
+
+
+
 
 if __name__ == '__main__':
    app.run(debug = True)
