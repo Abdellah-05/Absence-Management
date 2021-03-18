@@ -10,6 +10,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="/static/css/bootstrap.min.css">
       <link rel="stylesheet" href="/static/css/style_home.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
       <!-------------------------------------Material_Design_Bootstrap------------------------------------->
       <link href="/static/css/mdb.min.css" rel="stylesheet">
       
@@ -25,39 +26,40 @@
         });
         </script>
       
-      <title>Face Recog WebApp</title>
+      <title>Absence management</title>
       
     </head>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light nav_bar">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
-            <a class="nav-link" href="#">Pricing</a>
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    
+    <body>
+      
+      <nav class="navbar navbar-expand-lg navbar-dark  nav_bar" >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="https://uca.ma/este">Ecole</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="#" style="margin-left: 30%;">About</a>
+              <a class="nav-link" href="#" style="margin-left: 30%;">Report</a>
+              <a class="nav-link" href="/" style="position: absolute;margin-left: 87%;">Log out</a>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-    <body>
+      </nav>
 
-      <h3 class="tit"><strong>BIENVENUE dans la gestion d'absence à EST ESSAOUIRA</strong></h3>
+      <h3 class="tit"><strong style="font-family: Georgia, 'Times New Roman', Times, serif; color: rgba(84, 253, 253, 0.705); font-weight: 700;">Welcome Mr.{{ProfName}} to the absence management</strong></h3>
       <div class="place1" >
-        <img id="bg" src="">
+        <img style="border-radius: 10px;" id="bg"  src="">
         <form action="/done" method="GET">
-          <input type="submit" class="btn btn-info" value="Done!" id="done">
+          <input type="submit" class="btn " value="Done!" id="done">
         </form>
         
       </div>
 
       <div class="place2">
         <div >
-          <img src="/static/images/ESTE.png" alt="" style="width: 100%; height: 100%;">
+          <img src="/static/images/ESTE.png" alt="" style="width: 98%; height: 100%; display: flex; float:right">
         </div>
         <div id="pfmd">
           <div class="mb-3">
@@ -76,29 +78,33 @@
         
       </div>
 
-<!--
-      <div class="col-md-4 col-md-offset-4">
-      <div class="container">
-      <div class="abc" align="left">
-      <h1><strong>Face Recognition WebApp</strong></h1>
-      </br></br>
-      <form action = "/video_1" method = "GET">
-        <input type="submit" class="btn btn-info" value="Start">
-      </form>
-      </div>
-      </div>
-      </div>
--->
       <div class="place3">
-        <input type="submit" class="btn btn-info" value="Start" id="start">
+        <input type="submit" class="btn" value="Start" id="start">
+      </div>
+      <div class=" footer-basic">
+        <footer>
+          <div style="position: absolute; margin-left: 35%;">
+            <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href="#">Home</a></li>
+                  <li class="list-inline-item"><a href="#">Services</a></li>
+                  <li class="list-inline-item"><a href="#">About</a></li>
+                  <li class="list-inline-item"><a href="#">Terms</a></li>
+                  <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+              </ul>
+              <p class="copyright">EST_ESSAOUIRA © 2021</p>
+            </div>
+        </footer>
       </div>
       <script>
         //{{ url_for('video_feed_1') }}
         document.getElementById("start").onclick = change;
         function change() {
           document.getElementById("bg").setAttribute('src',"{{ url_for('video_feed_1') }}")
+          document.getElementById("bg").setAttribute('class','bgn')
         }
       </script>
-      
+     
     </body>
+    
 </html>

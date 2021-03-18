@@ -1,6 +1,4 @@
 import pyrebase
-
-
 firebaseConfig = {
     "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
     "authDomain": "absence-management-8e00e.firebaseapp.com",
@@ -10,7 +8,7 @@ firebaseConfig = {
     "messagingSenderId": "266501909984",
     "appId": "1:266501909984:web:c0a3c895b7bc28449c0f85",
     "measurementId": "G-XE1KJ3PJLL"
-  };
+  }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
@@ -172,6 +170,7 @@ def Seance(mail, jour, temps):
 """
     
     #return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
+"""
 
 x='w'
 def set():
@@ -181,3 +180,43 @@ def set():
 print(x)
 set()
 print(x)
+"""
+"""
+Filiers_Etudiants = {
+  "NomFilier" : "GI-2",
+  "Etudiants" : ["BAJOUK-Wafae", "BOUSLHAMME-Oumaima", "KABABA-Yassine" , "AIT_ERRAMI-Zakaria" , "DRISSI-Mohammed", "AIT_ESSAKHI-Aimrane", "BDE-Chaimae"]
+}
+db.child("Filiers_Etudiants").child("GI-2").set(Filiers_Etudiants)
+"""
+"""
+Filiers_Emploi = {
+  "Monday": {
+    "14-18" : ["Organisation des entreprises et Droit", "i.charaheddine@gmail.com"]
+  },
+  "Wednesday": {
+    "08-12" : ["Réseaux Informatiques","l.zaid@gmail.com"],
+    "14-18" : ["Réseaux Informatiques","l.zaid@gmail.com"]
+  },
+  "Thursday": {
+    "08-12" : ["Réseaux Informatiques","l.zaid@gmail.com"],
+    "14-18" : ["Réseaux Informatiques","l.zaid@gmail.com"]
+  }   
+}
+
+db.child("Filiers_Emploi").child("GI-2").set(Filiers_Emploi)
+
+"""
+"""
+Profs = {
+  "Nom" : "ZAID",
+  "Prenom" : "Lamia",
+  "FiliersEnseignes" : ["GI-2", "IDSD-1", "ISIL"],
+  "E-mail" : "l.zaid@gmail.com"
+}
+db.child("Profs").child("ZAID-Lamia").set(Profs)
+"""
+
+"""get F_name"""
+
+
+

@@ -6,7 +6,7 @@ import os
 from werkzeug.utils import secure_filename
 import datetime
 from own_pc import Vidcamera1
-
+from management import absence_student
 
 app = Flask(__name__)
 
@@ -55,7 +55,7 @@ def push_in_db(L,filiere):
     for e in etudiants:
         if e not in L:
             absence.append(e)
-    db.child("absence").child(dateA).child(timeSeance).set(absence)
+    db.child("absence").child(filiere).child(dateA).child(timeSeance).set(absence)
 
 
 #-- authentification
