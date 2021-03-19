@@ -82,7 +82,13 @@ class professor():
         return list(profs.keys())
 
     def add_professor(self,f_name,l_name,email,f_ensei):
-        p={"E-mail" : email,"FiliersEnseignes" : f_ensei,"Nom" : l_name.upper(),"Prenom" : f_name.capitalize()}
+        
+        FilieresEnsiegnie = []
+        for f in f_ensei :
+            if f not in FilieresEnsiegnie:
+                FilieresEnsiegnie.append(f.upper())
+
+        p={"E-mail" : email,"FiliersEnseignes" : FilieresEnsiegnie,"Nom" : l_name.upper(),"Prenom" : f_name.capitalize()}
         prof=dict(db.child('Profs').get().val())
         name=l_name.upper()+'-'+f_name.capitalize()
         if name not in (list(prof.keys())):

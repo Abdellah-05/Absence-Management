@@ -164,10 +164,20 @@ def video_feed_1():
 
 
 
-@app.route('/admin')
+@app.route('/admin', methods = ['GET','POST'])
 def admin():
     filieres=absence_student().filieres()
     profs=professor().profs()
+    if request.method == "POST" :
+        FName = request.form.get('FName')
+        LName = request.form.get('LName')
+        courses = request.form.get('courses')
+        email = request.form.get('email')
+        coursesList = courses.split(',')
+        try:           
+            professor().add_professor(FName, LName, email, coursesList)
+        except:
+            print("Warning to send data")
     return render_template('admin.html',filieres=filieres,profs=profs)
 
 
@@ -181,9 +191,10 @@ def Students():
 @app.route('/prof', methods = ['GET','POST'])
 def Prof():
     prof_name=request.form.get('searching_prof')
+    firstNameOf_Prof = prof_name.split('-')[0].lower()
     email=db.child('Profs').child(prof_name).child('E-mail').get().val()
     filieres=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
-    return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres)
+    return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
 
 
 
