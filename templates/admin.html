@@ -338,9 +338,9 @@
             <h4> Select it <span class="glyphicon glyphicon-ok "></span></h4>
         </h4>
     </div>
-      <form role="search" method='POST' enctype='multipart/form-data'  style="width: 70%;">
+      <form role="search" action="/time_table" method='POST' enctype='multipart/form-data'  style="width: 70%;">
         <div class="input-group">
-          <input type="text" name="searching" list="myDataList1" class="form-control" placeholder="Sector name..">
+          <input type="text" name="searching_timetable" list="myDataList1" class="form-control" placeholder="Sector name..">
                  
         <datalist id="myDataList1">                                   
           {%for f in filieres%}                                  
@@ -348,7 +348,7 @@
           {%endfor%}                                               
         </datalist>        
         <div class="input-group-btn">
-            <a href="#"> <button type="button" class="btn btn-danger">Searching</button></a>
+            <a href="#"> <button type="submit" class="btn btn-danger">Searching</button></a>
         </div>
                 
         </div>

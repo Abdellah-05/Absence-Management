@@ -101,4 +101,14 @@ class professor():
 
 #professor().add_professor('khadija','sadik','k.sadik@gmail.com',['IDSD-2','GI-1','ER-2'])
 #professor().delete_professor('SADIK-Khadija')
-professor().profs()
+#professor().profs()
+
+class TimeTable():
+
+    def dict_timetable(self,f_n):
+        time_table=db.child('Filiers_Emploi').child(f_n).get().val()
+        #print(dict(time_table)['Friday']['08-12'][0])
+        return dict(time_table)
+#TimeTable().timetable('IDSD-2')
+#db.child('Filiers_Emploi').child("GE-2").child('Monday').set({'08-12':[' '],'14-18':[' ']})
+

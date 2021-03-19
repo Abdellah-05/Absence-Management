@@ -1,12 +1,10 @@
 ## python -m http.server
 ## from the output folder to open http on 8000 port
 
-from flask import Flask, render_template, request,Response, redirect, session
-import os
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request,Response, redirect
 import datetime
 from own_pc import Vidcamera1
-from management import absence_student,professor
+from management import absence_student , professor , TimeTable
 
 app = Flask(__name__)
 
@@ -185,6 +183,11 @@ def Prof():
     filieres=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
     return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres)
 
+@app.route('/time_table', methods = ['GET','POST'])
+def time():
+    filiere_n=request.form.get('searching_timetable')
+    time_table=TimeTable().dict_timetable(filiere_n)
+    return render_template('time_table.html',time_table=time_table,filiere_n=filiere_n)
 
 
 

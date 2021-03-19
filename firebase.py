@@ -33,24 +33,24 @@ Filiers_Emploi = {
     "14-18" : ["Data Minig", "a.guezzaz@gmail.com"]
   },
   "Tuesday": {
-    "08-12" : [],
+    "08-12" : [' '],
     "14-18" : ["Data Minig", "a.guezzaz@gmail.com"]
   },
   "Wednesday": {
-    "08-12" : [],
-    "14-18" : []
+    "08-12" : [' '],
+    "14-18" : [' ']
   },
   "Thursday": {
     "08-12" : ["Machine Learning", "s.gounane@gmail.com"],
     "14-18" : ["Machine Learning", "s.gounane@gmail.com"]
   },
   "Friday": {
-    "08-12" : [],
-    "14-18" : []
+    "08-12" : [' '],
+    "14-18" : [' ']
   },
   "Saturday": {
-    "08-12" : [],
-    "14-18" : []
+    "08-12" : [' '],
+    "14-18" : [' ']
   }
     
 }
@@ -189,6 +189,37 @@ Filiers_Etudiants = {
 db.child("Filiers_Etudiants").child("GI-2").set(Filiers_Etudiants)
 """
 """
+Filiers_Emploi = {
+  "Monday": {
+    "08-12" : ["Organisation des entreprises et Droit", "i.charaheddine@gmail.com"],
+    "14-18" : [" "]
+  },
+  "Tuesday": {
+    "08-12" : ["Réseaux Informatiques","l.zaid@gmail.com"],
+    "14-18" : ["Réseaux Informatiques","l.zaid@gmail.com"]
+  },
+  "Wednesday": {
+    "08-12" : [' '],
+    "14-18" : ["Organisation des entreprises et Droit", "i.charaheddine@gmail.com"]
+  },
+  "Thursday": {
+    "08-12" : ["Réseaux Informatiques","l.zaid@gmail.com"],
+    "14-18" : ["Réseaux Informatiques","l.zaid@gmail.com"]
+  },
+  "Friday": {
+    "08-12" : ["Réseaux Informatiques","l.zaid@gmail.com"],
+    "14-18" : ["Organisation des entreprises et Droit", "i.charaheddine@gmail.com"]
+  },
+  "Saturday": {
+    "08-12" : [' '],
+    "14-18" : [' ']
+  }
+    
+}
+
+db.child("Filiers_Emploi").child("GI-2").set(Filiers_Emploi)
+
+
 Filiers_Emploi = {
   "Monday": {
     "14-18" : ["Organisation des entreprises et Droit", "i.charaheddine@gmail.com"]
