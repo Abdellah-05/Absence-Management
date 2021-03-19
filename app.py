@@ -6,7 +6,7 @@ import os
 from werkzeug.utils import secure_filename
 import datetime
 from own_pc import Vidcamera1
-from management import absence_student
+from management import absence_student,professor
 
 app = Flask(__name__)
 
@@ -166,16 +166,24 @@ def video_feed_1():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    filieres=absence_student().filieres()
+    profs=professor().profs()
+    return render_template('admin.html',filieres=filieres,profs=profs)
 
 
-@app.route('/students')
+@app.route('/students', methods = ['GET','POST'])
 def Students():
-    return render_template('students.html')
+    filiere_n=request.form.get('searching_student')
+    nombre_students=len(list(absence_student().list_student(filiere_n)))
+    list_students=absence_student().list_student(filiere_n)
+    return render_template('students.html',filiere_n=filiere_n,nombre_students=nombre_students,list_students=sorted(list_students))
 
-@app.route('/prof')
+@app.route('/prof', methods = ['GET','POST'])
 def Prof():
-    return render_template('prof.html')
+    prof_name=request.form.get('searching_prof')
+    email=db.child('Profs').child(prof_name).child('E-mail').get().val()
+    filieres=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
+    return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres)
 
 
 

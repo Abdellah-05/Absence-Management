@@ -76,6 +76,11 @@ class absence_student():
 
 
 class professor():
+    
+    def profs(self):
+        profs=dict(db.child('Profs').get().val())
+        return list(profs.keys())
+
     def add_professor(self,f_name,l_name,email,f_ensei):
         p={"E-mail" : email,"FiliersEnseignes" : f_ensei,"Nom" : l_name.upper(),"Prenom" : f_name.capitalize()}
         prof=dict(db.child('Profs').get().val())
@@ -96,3 +101,4 @@ class professor():
 
 #professor().add_professor('khadija','sadik','k.sadik@gmail.com',['IDSD-2','GI-1','ER-2'])
 #professor().delete_professor('SADIK-Khadija')
+professor().profs()

@@ -302,17 +302,17 @@
             <h4> Select it <span class="glyphicon glyphicon-ok "></span></h4>
         </h4>
       </div>
-        <form role="search" method='POST' enctype='multipart/form-data'  style="width: 70%;">
+        <form role="search" action="/students" method='POST' enctype='multipart/form-data'  style="width: 70%;">
             <div class="input-group">
-              <input type="text" name="searching" list="myDataList" class="form-control" placeholder="Sector name..">
+              <input type="text" name="searching_student" list="myDataList" class="form-control" placeholder="Sector name..">
                      
-            <datalist id="myDataList">                                   
-                        <option> test 1 </option>  
-                        <option> test 2 </option>  
-                        <option> test 3 </option>                                        
+            <datalist id="myDataList"> 
+              {%for f in filieres%}                                  
+                        <option>{{f}}</option>  
+              {%endfor%}                                    
             </datalist>        
             <div class="input-group-btn">
-                <a href="#"> <button type="button" class="btn btn-danger">Searching</button></a>
+                <a href="/"> <button type="submit" class="btn btn-danger">Searching</button></a>
             </div>
                     
             </div>
@@ -332,7 +332,7 @@
           </div>
     </div>
     <div class="col-sm-8">
-        <h2>TimeTible Sector</h2>
+        <h2>TimeTable Sector</h2>
         <h4><strong style="border-bottom: 2px dotted orangered;">MISSION </strong> :
             <h4><span class="glyphicon glyphicon-chevron-right"></span> You must write the name of the sector you want to manage their TimeTible. </h4> 
             <h4> Select it <span class="glyphicon glyphicon-ok "></span></h4>
@@ -340,12 +340,12 @@
     </div>
       <form role="search" method='POST' enctype='multipart/form-data'  style="width: 70%;">
         <div class="input-group">
-          <input type="text" name="searching" list="myDataList" class="form-control" placeholder="Sector name..">
+          <input type="text" name="searching" list="myDataList1" class="form-control" placeholder="Sector name..">
                  
-        <datalist id="myDataList">                                   
-                    <option> test 1 </option>  
-                    <option> test 2 </option>  
-                    <option> test 3 </option>                                        
+        <datalist id="myDataList1">                                   
+          {%for f in filieres%}                                  
+            <option>{{f}}</option>  
+          {%endfor%}                                               
         </datalist>        
         <div class="input-group-btn">
             <a href="#"> <button type="button" class="btn btn-danger">Searching</button></a>
@@ -372,17 +372,17 @@
                 <h4> Select it <span class="glyphicon glyphicon-ok "></span></h4>
             </h4>
         </div>
-        <form role="search" method='POST' enctype='multipart/form-data'  style="width: 70%;">
+        <form role="search" action="/prof" method='POST' enctype='multipart/form-data'  style="width: 70%;">
             <div class="input-group">
-              <input type="text" name="searching" list="myDataList" class="form-control" placeholder="Professor name..">
+              <input type="text" name="searching_prof" list="myDataList2" class="form-control" placeholder="Professor name..">
                      
-            <datalist id="myDataList">                                   
-                        <option> test 1 </option>  
-                        <option> test 2 </option>  
-                        <option> test 3 </option>                                        
+            <datalist id="myDataList2">                                   
+              {%for p in profs%}                                  
+                <option>{{p}}</option>  
+              {%endfor%}                                     
             </datalist>        
             <div class="input-group-btn">
-                <a href="#"> <button type="button" class="btn btn-danger">Searching</button></a>
+                <a href="#"> <button type="submit" class="btn btn-danger">Searching</button></a>
             </div>
                     
             </div>
