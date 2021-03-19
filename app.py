@@ -36,9 +36,9 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
-jourName = "Thursday"
+jourName = "Monday"
 minutes = "48"
-heur = "07"
+heur = "13"
 
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
