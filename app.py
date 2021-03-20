@@ -38,7 +38,7 @@ jourName = DATE.strftime("%A")
 
 jourName = "Monday"
 minutes = "48"
-heur = "13"
+heur = "07"
 
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -192,11 +192,23 @@ def Students():
 def Prof():
     prof_name=request.form.get('searching_prof')
     firstNameOf_Prof = prof_name.split('-')[0].lower()
-    email=db.child('Profs').child(prof_name).child('E-mail').get().val()
-    filieres=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
-    return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
+    PrLastName = prof_name.split('-')[1]
+    PrFirstName = prof_name.split('-')[0]
+    email = db.child('Profs').child(prof_name).child('E-mail').get().val()
+    filieres = db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
+    CSV_Filieres = filieres[0]
+    for f in range(1, len(filieres)) :
+        CSV_Filieres = CSV_Filieres + "," + filieres[f]
+    return render_template('prof.html',PrLastName=PrLastName, PrFirstName=PrFirstName, CSV_Filieres=CSV_Filieres, prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
 
 
+@app.route('/prof/<nameProf>')
+def DeleteProf(nameProf):
+    try :
+        professor().delete_professor(nameProf)
+    except:
+        print('Warning in delete professor')
+    return render_template('admin.html')
 
 
 
