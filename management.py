@@ -115,6 +115,15 @@ class TimeTable():
         time_table=db.child('Filiers_Emploi').child(f_n).get().val()
         #print(dict(time_table)['Friday']['08-12'][0])
         return dict(time_table)
+
+    def edit_timetable(self,f_n,day,hour,subject):
+        time_table=TimeTable().dict_timetable(f_n)
+        time_table[day][hour][0]=subject
+        db.child('Filiers_Emploi').child(f_n).set(time_table)
+        
+    def delete_timetable(self,f_n):
+        db.child('Filiers_Emploi').child(f_n).remove()
+
 #TimeTable().timetable('IDSD-2')
 #db.child('Filiers_Emploi').child("GE-2").child('Monday').set({'08-12':[' '],'14-18':[' ']})
 

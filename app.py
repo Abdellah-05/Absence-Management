@@ -196,14 +196,27 @@ def Prof():
 
 @app.route('/time_table', methods = ['GET','POST'])
 def time():
+    global filiere_n
     filiere_n=request.form.get('searching_timetable')
     time_table=TimeTable().dict_timetable(filiere_n)
     return render_template('time_table.html',time_table=time_table,filiere_n=filiere_n)
+      
+    
+@app.route('/save_time', methods = ['POST'])
+def save_time():   
+    #print(filiere_n) _table=TimeTable().dict_timetable(filiere_n)
+    day=request.form.get('day')
+    hour=request.form.get('hour')
+    subject=request.form.get('subject')
+    #print(day,hour,subject)
+    TimeTable().edit_timetable(filiere_n,day,hour,subject)
+    return redirect('/admin')
 
-
-
-
-
+@app.route('/delete_time')
+def delete_time():  
+    TimeTable().delete_timetable(filiere_n)
+    print("Done")
+    return redirect('/admin')
 
 if __name__ == '__main__':
    app.run(debug = True)
