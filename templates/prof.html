@@ -199,8 +199,11 @@
             </ul>
 
             <div>
-                <button style="border-radius: 7px; position: absolute; margin-left: 52%; height: 37px; background-color: rgba(36, 199, 22, 0.233);" class="btn btn-success pull-right" type="submit"><span class="glyphicon glyphicon-pencil"></span></button>
-                <button  style="border-radius: 7px; position: absolute; margin-left: 73%; height: 37px; background-color: rgba(206, 49, 44, 0.26);" class="btn btn-danger pull-right" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                <button style="border-radius: 7px; position: absolute; margin-left: 52%; height: 37px; background-color: rgba(36, 199, 22, 0.233);" class="btn btn-success pull-right" type="submit"  data-toggle="modal" data-target="#myModalEdit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                <a href="/prof/{{prof_name}}">
+                    <button  style="border-radius: 7px; position: absolute; margin-left: 73%; height: 37px; background-color: rgba(206, 49, 44, 0.26);" class="btn btn-danger pull-right" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                </a>
+                
                                 
             </div>
         </div>
@@ -215,7 +218,7 @@
 
  
 
- <!-- Modal -->
+ <!-- Modal add professro -->
  <div class="modal fade" id="myModal" role="dialog">
    <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -253,6 +256,50 @@
       </div>
    </div>
  </div>
+
+
+
+
+ 
+ <!-- Modal edite professro -->
+ <div class="modal fade" id="myModalEdit" role="dialog">
+    <div class="modal-dialog modal-sm">
+     <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <p class="modal-title">Edite Mr.{{firstNameOf_Prof}}</p>
+         </div>
+         <form class="form" action='/edit_prof' method='POST' enctype='multipart/form-data'>
+         <div class="modal-body">
+             
+             <div class="form-group">
+                 <label for="recipient-name" class="col-form-label">First Name :</label>
+                 <input name="FName_" value="{{PrFirstName}}" type="text" class="form-control" id="recipient-name" required>
+             </div>
+             <div class="form-group">
+                 <label for="recipient-name" class="col-form-label">Last Name :</label>
+                 <input name="LName_" value="{{PrLastName}}" type="text" class="form-control" id="recipient-name" required>
+             </div>
+             <div class="form-group">
+                 <label for="recipient-name" class="col-form-label">E-mail :</label>
+                 <input name="email_" value="{{email}}" type="email" class="form-control" id="recipient-name" required>
+             </div>
+             <div class="form-group">
+                 <label for="recipient-name" class="col-form-label">Courses taught : <br> 
+                     <small style="color: rgba(197, 65, 65, 0.938);" >(Please verify the names of Courses taught)</small> </label>
+                 <input name="courses_" value="{{CSV_Filieres}}" type="text" class="form-control" id="recipient-name" required>
+             </div>
+             
+         </div>
+         
+         <div class="modal-footer">            
+             <button style="background-color: rgba(0, 128, 0, 0.555); border-radius: 5px;"  type="submit" class="btn btn-success">Save</button>                   
+         </div>
+         </form>
+       </div>
+    </div>
+  </div>
+ 
 
 
   

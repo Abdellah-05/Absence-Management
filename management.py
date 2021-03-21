@@ -100,9 +100,8 @@ class professor():
         del profs[name]
         db.child('Profs').set(profs)
 
-    def edit_professor(self,f_name,l_name,email,f_ensei):
-        name=l_name.upper()+'-'+f_name.capitalize()
-        self.delete_professor(name)
+    def edit_professor(self,f_name,l_name,email,f_ensei,prof_name):
+        self.delete_professor(prof_name)
         self.add_professor(f_name,l_name,email,f_ensei)
 
 #professor().add_professor('khadija','sadik','k.sadik@gmail.com',['IDSD-2','GI-1','ER-2'])

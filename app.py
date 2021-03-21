@@ -36,7 +36,7 @@ jourName = DATE.strftime("%A")
 
 jourName = "Monday"
 minutes = "48"
-heur = "13"
+heur = "07"
 
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -188,12 +188,17 @@ def Students():
 
 @app.route('/prof', methods = ['GET','POST'])
 def Prof():
+    global prof_name
     prof_name=request.form.get('searching_prof')
     firstNameOf_Prof = prof_name.split('-')[0].lower()
-    email=db.child('Profs').child(prof_name).child('E-mail').get().val()
-    filieres=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
-    return render_template('prof.html',prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
-
+    PrLastName = prof_name.split('-')[1]
+    PrFirstName = prof_name.split('-')[0]
+    email = db.child('Profs').child(prof_name).child('E-mail').get().val()
+    filieres = db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
+    CSV_Filieres = filieres[0]
+    for f in range(1, len(filieres)) :
+        CSV_Filieres = CSV_Filieres + "," + filieres[f]        
+    return render_template('prof.html',PrLastName=PrLastName, PrFirstName=PrFirstName, CSV_Filieres=CSV_Filieres, prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
 @app.route('/time_table', methods = ['GET','POST'])
 def time():
     global filiere_n
@@ -217,6 +222,39 @@ def delete_time():
     TimeTable().delete_timetable(filiere_n)
     print("Done")
     return redirect('/admin')
+
+
+@app.route('/edit_prof', methods = ['GET','POST'])
+def EditProf():
+    if request.method == "POST" :
+        PrLastName = request.form.get('FName_')
+        PrFirstName = request.form.get('LName_')
+        filieres = request.form.get('courses_')
+        print(filieres, "-----------------------------------------")
+        email = request.form.get('email_')
+        coursesList = filieres.split(',')
+        print(PrFirstName)
+        print(PrLastName)
+        print(email)
+        print(coursesList)
+        try:          
+            professor().edit_professor(PrFirstName, PrLastName, email, coursesList,prof_name)
+        except:
+            print("Warning to edit professor")
+    return redirect('/admin')
+
+
+@app.route('/prof/<nameProf>')
+def DeleteProf(nameProf):
+    try :
+        professor().delete_professor(nameProf)
+    except:
+        print('Warning in delete professor')
+    return render_template('admin.html')
+
+
+
+
 
 if __name__ == '__main__':
    app.run(debug = True)
