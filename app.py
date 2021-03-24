@@ -1,13 +1,13 @@
 ## python -m http.server
 ## from the output folder to open http on 8000 port
 
-from flask import Flask, render_template, request,Response, redirect
+from flask import Flask, render_template, request,Response, redirect, session
 import datetime
 from own_pc import Vidcamera1
-from management import absence_student , professor , TimeTable
+from management import absence_student , professor , TimeTable, Admin
 
 app = Flask(__name__)
-
+app.secret_key = 'ELAAROUB DAMOU'
 #app.config['UPLOAD_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\input_fold'
 #app.config['OUTPUT_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\output_fold'
 
@@ -37,7 +37,7 @@ jourName = DATE.strftime("%A")
 jourName = "Monday"
 minutes = "48"
 heur = "07"
-
+print(jourName, minutes, heur)
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
@@ -78,14 +78,17 @@ def loginPost():
     try:
         auth.sign_in_with_email_and_password(email,password)
         mailProf = email
-        
-        if int(heur) == 7 and int(minutes) >= 45 :
-            timeSeance="08-12"
-            return redirect('/home')
-        if int(heur) == 13 and int(minutes) >= 45 :
-            timeSeance="14-18"
-            return redirect('/home')
-        return redirect('/no_seance')
+    
+        if Admin().getAdminInfo(mailProf) != False :
+            return redirect('/admin')
+        if Admin().getAdminInfo(mailProf) == False :
+            if int(heur) == 7 and int(minutes) >= 45 :
+                timeSeance="08-12"
+                return redirect('/home')
+            if int(heur) == 13 and int(minutes) >= 45 :
+                timeSeance="14-18"
+                return redirect('/home')
+            return redirect('/no_seance')
     except:
         return render_template('login.html')
 
@@ -195,6 +198,7 @@ def Prof():
     PrFirstName = prof_name.split('-')[0]
     email = db.child('Profs').child(prof_name).child('E-mail').get().val()
     filieres = db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
+    print(prof_name,  '-----------------------------------------------------')
     CSV_Filieres = filieres[0]
     for f in range(1, len(filieres)) :
         CSV_Filieres = CSV_Filieres + "," + filieres[f]        
@@ -246,6 +250,7 @@ def EditProf():
 
 @app.route('/prof/<nameProf>')
 def DeleteProf(nameProf):
+    print(nameProf, '---------------------')
     try :
         professor().delete_professor(nameProf)
     except:

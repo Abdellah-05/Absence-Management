@@ -15,7 +15,6 @@ db = firebase.database()
 
 
 class absence_student():
-
     def filieres(self):
         filieres=[]
         filiere=db.child("Filiers_Etudiants").get().val()
@@ -125,4 +124,19 @@ class TimeTable():
 
 #TimeTable().timetable('IDSD-2')
 #db.child('Filiers_Emploi').child("GE-2").child('Monday').set({'08-12':[' '],'14-18':[' ']})
+
+class Admin():
+    def getAdminInfo(self, mail):
+        admins = db.child("Admins").get().val()
+        adminInfo = {}
+        for admin in admins:
+            mailAdmin = db.child("Admins").child(admin).get().val()['E-mail']
+            if mail == mailAdmin :
+                adminInfo = {
+                    "Prenom" : db.child("Admins").child(admin).get().val()['Prenom'],
+                    "Nom" : db.child("Admins").child(admin).get().val()['Nom'],
+                    "email" : db.child("Admins").child(admin).get().val()['E-mail']
+                }
+                return adminInfo
+        return False
 
