@@ -23,10 +23,10 @@ class absence_student():
             filieres.append(f)
         return filieres
     def add_student(self,f_name,l_name,f_n):
-        name=str(l_name.upper()+"-"+f_name.capitalize())
+        name=str(str(l_name).upper()+"-"+str(f_name).capitalize())
         student=list(self.list_student(f_n))
         if name not in student:
-            student.append(l_name.upper()+"-"+f_name.capitalize())
+            student.append(str(l_name).upper()+"-"+str(f_name).capitalize())
         db.child('Filiers_Etudiants').child(f_n).child('Etudiants').set(student)
 
     def edit_student(self,name,f_name,l_name,f_n):

@@ -181,11 +181,42 @@ def admin():
 
 @app.route('/students', methods = ['GET','POST'])
 def Students():
+    Fname_list=[]
+    Lname_list=[]
     filiere_n=request.form.get('searching_student')
     nombre_students=len(list(absence_student().list_student(filiere_n)))
     list_students=absence_student().list_student(filiere_n)
-    return render_template('students.html',filiere_n=filiere_n,nombre_students=nombre_students,list_students=sorted(list_students))
+    for n in list_students:
+        Fname_list.append(n.split('-')[1])
+        Lname_list.append(n.split('-')[0])
+    return render_template('students.html',filiere_n=filiere_n,nombre_students=nombre_students,list_students=sorted(list_students),Fname_list=Fname_list,Lname_list=Lname_list)
 
+@app.route('/students/Add/<filiere_n>', methods = ['GET','POST'])
+def AddStudents(filiere_n):
+    first_name=request.form.get('FName')
+    last_name=request.form.get('LName')
+    try:
+        absence_student().add_student(first_name , last_name , filiere_n)
+    except:
+        print('erreur')
+    return redirect('/admin')
+
+@app.route('/students/Edit/<filiere_n>/<name>', methods = ['GET','POST'])
+def EditStudents(filiere_n,name):
+    if request.method=='POST':
+        print('post------------------')
+        first_name=request.form.get('first_name')
+        last_name=request.form.get('last_name')
+    try:
+        absence_student().edit_student(str(name) , first_name , last_name , filiere_n)
+    except:
+        print('erreur in edit')
+    return redirect('/admin')
+    
+@app.route('/students/delete/<filiere_n>/<name>', methods = ['GET','POST'])
+def deleteStudents(filiere_n,name):
+    absence_student().delete_student(name , filiere_n)
+    return redirect("/admin")
 @app.route('/prof', methods = ['GET','POST'])
 def Prof():
     global prof_name
@@ -199,6 +230,7 @@ def Prof():
     for f in range(1, len(filieres)) :
         CSV_Filieres = CSV_Filieres + "," + filieres[f]        
     return render_template('prof.html',PrLastName=PrLastName, PrFirstName=PrFirstName, CSV_Filieres=CSV_Filieres, prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
+
 @app.route('/time_table', methods = ['GET','POST'])
 def time():
     global filiere_n
