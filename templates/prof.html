@@ -199,22 +199,35 @@
             </ul>
 
             <div>
-                <button style="border-radius: 7px; position: absolute; margin-left: 52%; height: 37px; background-color: rgba(36, 199, 22, 0.233);" class="btn btn-success pull-right" type="submit"  data-toggle="modal" data-target="#myModalEdit" ><span class="glyphicon glyphicon-pencil"></span></button>
-                <a href="/prof/{{prof_name}}">
-                    <button  style="border-radius: 7px; position: absolute; margin-left: 73%; height: 37px; background-color: rgba(206, 49, 44, 0.26);" class="btn btn-danger pull-right" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
-                </a>
-                
-                                
+                <button style="border-radius: 7px; position: absolute; margin-left: 52%; height: 37px; background-color: rgba(36, 199, 22, 0.233);" class="btn btn-success pull-right" type="submit"  data-toggle="modal" data-target="#myModalEdit" ><span class="glyphicon glyphicon-pencil"></span></button>                
+                <button  style="border-radius: 7px; position: absolute; margin-left: 73%; height: 37px; background-color: rgba(206, 49, 44, 0.26);" class="btn btn-danger pull-right" type="submit" data-toggle="modal" data-target="#myModalDelet" ><span class="glyphicon glyphicon-trash"></span></button>                                                             
             </div>
+
         </div>
-    </div>
-    
+    </div>    
     <br>
   </div>
 </div>
 
 
-
+<!-- Modal confirmation-->
+<div class="modal fade" id="myModalDelet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: rgb(214, 99, 122); font-family: Georgia, 'Times New Roman', Times, serif; font-size: large;">Are you sure want to delete {{filiere_n}} TimeTable ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <a href="/prof/{{prof_name}}"><button type="button" class="btn btn-primary">Yes</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
  
 

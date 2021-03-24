@@ -251,3 +251,35 @@ db.child("Profs").child("ZAID-Lamia").set(Profs)
 
 
 
+Admin = {
+  "Nom" : "DAMOU",
+  "Prenom" : "Walid",  
+  "E-mail" : "walid.damou.2015@gmail.com",
+  "Password" : "walididsd"
+}
+"""db.child("Admins").child("DAMOU-Walid").set(Admin)
+
+admins = db.child("Admins").get().val()
+for e in admins:
+  print(e)
+  print(db.child("Admins").child(e).get().val()['E-mail'])
+"""
+def getAdminInfo(mail):
+  admins = db.child("Admins").get().val()
+  adminInfo = {}
+  for admin in admins:
+    mailAdmin = db.child("Admins").child(admin).get().val()['E-mail']
+    if mail == mailAdmin :
+          adminInfo = {
+            "Prenom" : db.child("Admins").child(admin).get().val()['Prenom'],
+            "Nom" : db.child("Admins").child(admin).get().val()['Nom'],
+            "email" : db.child("Admins").child(admin).get().val()['E-mail']
+          }
+          return adminInfo
+  return False
+
+c = getMailAdmin('abdouelaaroub@gmail.com')
+if c != False:
+  print(c['Prenom'])
+else :
+  print("emmmmm")
