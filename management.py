@@ -52,8 +52,8 @@ class absence_student():
         absence_global=[]
         for d in dates:
             c=db.child('absence').child(f_n).child(d).get().val()
-        for n in (list(c.values())[0]):
-            absence_global.append(n)
+            for n in (list(c.values())[0]):
+                absence_global.append(n)
         return absence_global
 
     def absence_dictionary(self,f_n):
@@ -64,10 +64,10 @@ class absence_student():
         dates=self.dates_absence(f_n)
         list_absences=self.list_absence(f_n,dates)
         for n in list_students:
-            d[n]=list_absences.count(n)
+            d[n]=list_absences.count(n)*3
         return d
 
-#print(absence_student().absence_dictionary('IDSD-2'))
+print(absence_student().absence_dictionary('IDSD-2'))
 #absence_student().delete_student('DAMOU-Walid','IDSD-2')
 #absence_student().add_student('walid','DAMOU','IDSD-2')
 

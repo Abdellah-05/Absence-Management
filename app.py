@@ -128,7 +128,14 @@ def front_page():
 
 @app.route('/no_seance')
 def no_seance():
-    return render_template("no_seance.html")
+    prf = db.child("Profs").get()
+    nomProf = ""
+    
+    for p in prf.each():
+        if p.val()["E-mail"] == mailProf:
+            nomProf = p.key()
+
+    return render_template("no_seance.html" , Prof_name=nomProf)
 
 
 ### push in database 
@@ -289,8 +296,18 @@ def DeleteProf(nameProf):
         print('Warning in delete professor')
     return render_template('admin.html')
 
+@app.route('/Absence/<prof_name>')
+def Absence(prof_name):
+    filiers=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
+    print(filiers)
+    return render_template('absence.html',filiers=filiers)
 
-
+@app.route('/Absence/list/<filiere>')
+def Absence_of_filiere(filiere):
+    #absence=db.child('absence').child(name_filiere).get().val()
+    #print(absence)
+    list_student_hours=absence_student().absence_dictionary(filiere)
+    return render_template('list_absence.html',filiere=filiere,list_student_hours=list_student_hours)
 
 
 if __name__ == '__main__':
