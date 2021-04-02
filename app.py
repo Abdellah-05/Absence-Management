@@ -34,9 +34,6 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
-jourName = "Monday"
-minutes = "48"
-heur = "07"
 print(jourName, minutes, heur)
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -51,13 +48,13 @@ filierName= ""
 ProfName = ""
 
 #------------------------------function_database---------------------------# 
-def push_in_db(L,filiere):
+def push_in_db(L,filiere, matiereName):
     global absence
     etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
     for e in etudiants:
         if e not in L:
             absence.append(e)
-    db.child("absence").child(filiere).child(dateA).child(timeSeance).set(absence)
+    db.child("absence").child(filiere).child(dateA).child(timeSeance).child(matiereName).set(absence)
 
 
 #-- authentification
@@ -116,7 +113,7 @@ def Seance(mail, jour, temps):
 ### front page 
 @app.route('/home')
 def front_page():
-    global filierName
+    global filierName,matiereName
     if Seance(mailProf, jourName, timeSeance) == False :
         return redirect('/no_seance')
     
@@ -141,7 +138,7 @@ def no_seance():
 ### push in database 
 @app.route('/done')
 def push():
-    push_in_db(presence,filierName)
+    push_in_db(presence,filierName,matiereName)
     return render_template('home.html')
 
 ## for own computer camera processing
@@ -286,7 +283,6 @@ def EditProf():
             print("Warning to edit professor")
     return redirect('/admin')
 
-
 @app.route('/prof/<nameProf>')
 def DeleteProf(nameProf):
     print(nameProf, '---------------------')
@@ -304,10 +300,14 @@ def Absence(prof_name):
 
 @app.route('/Absence/list/<filiere>')
 def Absence_of_filiere(filiere):
-    #absence=db.child('absence').child(name_filiere).get().val()
-    #print(absence)
-    list_student_hours=absence_student().absence_dictionary(filiere)
-    return render_template('list_absence.html',filiere=filiere,list_student_hours=list_student_hours)
+    matiere=''
+    for day in ['Monday' , 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday'] :
+        for time in ['08-12' , '14-18'] :
+            a=db.child('Filiers_Emploi').child(filiere).child(day).child(time).get().val()
+            if a[1] == mailProf :
+                matiere = a[0]
+    list_student_hours=absence_student().absence_dictionary(filiere , matiere)
+    return render_template('list_absence.html' , filiere=filiere , list_student_hours=list_student_hours)
 
 
 if __name__ == '__main__':
