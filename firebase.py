@@ -264,6 +264,7 @@ for e in admins:
   print(e)
   print(db.child("Admins").child(e).get().val()['E-mail'])
 """
+"""
 def getAdminInfo(mail):
   admins = db.child("Admins").get().val()
   adminInfo = {}
@@ -277,9 +278,28 @@ def getAdminInfo(mail):
           }
           return adminInfo
   return False
+"""
+  
 
-c = getMailAdmin('abdouelaaroub@gmail.com')
-if c != False:
-  print(c['Prenom'])
-else :
-  print("emmmmm")
+student = db.child("absence").child("IDSD-2").get().val()
+print('-------------------------------------------------------------------------\n \n')
+dates = []
+temps = []
+modules = []
+#for date in student:
+ # print(date)
+  #dates.append(db.child("absence").child("IDSD-2").child(date).get().key())
+  
+
+#for tps in dates:
+  #print(db.child("absence").child("IDSD-2").child(tps).get().key())
+  
+"""
+test = db.child("absence").child("IDSD-2").child("30-03-2021").get().key()
+print(test)
+
+  for temps in date:
+    for module in temps:
+      info = db.child("absence").child("IDSD-2").child(date).child(temps).child(module).get().val()
+      print(info)
+"""
