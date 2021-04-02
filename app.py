@@ -310,5 +310,16 @@ def Absence_of_filiere(filiere):
     return render_template('list_absence.html',filiere=filiere,list_student_hours=list_student_hours)
 
 
+
+
+@app.route('/statistiques')
+def statistiques():
+    names = ['abdou ', 'walid ', 'othmane']
+    donne = [30, 10, 40]
+    return render_template('statistiques.html', names = names, donne = donne)
+
+
+
+
 if __name__ == '__main__':
    app.run(debug = True)
