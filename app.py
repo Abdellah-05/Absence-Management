@@ -118,7 +118,8 @@ def front_page():
         return redirect('/no_seance')
     
     matiereName, filierName, ProfName , SeanceTime = Seance(mailProf, jourName, timeSeance)
-     
+    session['matiereName'] = matiereName
+    session['Prof_Name'] = ProfName
     return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
 
 
@@ -131,7 +132,7 @@ def no_seance():
     for p in prf.each():
         if p.val()["E-mail"] == mailProf:
             nomProf = p.key()
-
+    session['Prof_Name'] = nomProf
     return render_template("no_seance.html" , Prof_name=nomProf)
 
 
@@ -298,25 +299,35 @@ def Absence(prof_name):
     print(filiers)
     return render_template('absence.html',filiers=filiers)
 
-@app.route('/Absence/list/<filiere>')
+@app.route('/Absence/list/<filiere>', )
 def Absence_of_filiere(filiere):
-    matiere=''
+    #if request.method == 'POST':
+     #   hoursPast = request.form.get('FName_')
+    #matiere=''
     for day in ['Monday' , 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday'] :
         for time in ['08-12' , '14-18'] :
             a=db.child('Filiers_Emploi').child(filiere).child(day).child(time).get().val()
             if a[1] == mailProf :
                 matiere = a[0]
+    session['matiereName'] = matiere
+    session['filiere'] = filiere
     list_student_hours=absence_student().absence_dictionary(filiere , matiere)
+    session['studentsList'] = list_student_hours
+    session['sector'] = filiere
     return render_template('list_absence.html' , filiere=filiere , list_student_hours=list_student_hours)
 
 
 
 
-@app.route('/statistiques')
-def statistiques():
-    names = ['abdou ', 'walid ', 'othmane']
-    donne = [30, 10, 40]
-    return render_template('statistiques.html', names = names, donne = donne)
+@app.route('/statistiques/<studentName>', methods = ['GET','POST'])
+def statistiques(studentName):
+    hours_passed = absence_student().getHoursProfPassed(session['sector'],session['matiereName'] )*3
+    hours_total = db.child('Profs').child(session['Prof_Name']).get().val()['Hours']
+    names = ['Absence', 'Presence', 'Remaininig hours']
+    donne = [session['studentsList'][studentName], hours_passed - session['studentsList'][studentName], hours_total-hours_passed]
+    session['studentsList']
+    rate= (session['studentsList'][studentName]*100) /(hours_passed)
+    return render_template('statistiques.html', names = names, donne = donne , studentName=studentName , sector = session['filiere'] , rate = rate ,hours=session['studentsList'][studentName])
 
 
 

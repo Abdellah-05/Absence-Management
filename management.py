@@ -70,6 +70,21 @@ class absence_student():
             d[n]=list_absences.count(n)*3
         return d
 
+    def getHoursProfPassed(self,sector,m):
+        dates, temps, modules = [], [], []
+        Sector = db.child("absence").child(sector).get()
+        for date in Sector.each():
+            dates.append(date.key())
+        for tps in dates:
+            dat = db.child("absence").child(sector).child(tps).get()        
+            for e in dat.each():
+                temps.append(e.key())
+        for module, tps in zip(temps, dates):
+            tim = db.child("absence").child(sector).child(tps).child(module).get()        
+            for e in tim.each():
+                modules.append(e.key())    
+        return modules.count(m)
+
 #print(absence_student().absence_dictionary('IDSD-2','Machine Learning'))
 #absence_student().delete_student('DAMOU-Walid','IDSD-2')
 #absence_student().add_student('walid','DAMOU','IDSD-2')
