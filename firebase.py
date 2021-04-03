@@ -279,27 +279,64 @@ def getAdminInfo(mail):
           return adminInfo
   return False
 """
-  
-
-student = db.child("absence").child("IDSD-2").get().val()
+"""
+absence = 0
+sector = db.child("absence").child("IDSD-2").get()
 print('-------------------------------------------------------------------------\n \n')
 dates = []
 temps = []
 modules = []
-#for date in student:
- # print(date)
-  #dates.append(db.child("absence").child("IDSD-2").child(date).get().key())
-  
-
-#for tps in dates:
-  #print(db.child("absence").child("IDSD-2").child(tps).get().key())
-  
+students = []
+for date in sector.each():
+  dates.append(date.key())
+print(dates, 'dates')
+for tps in dates:
+  dat = db.child("absence").child("IDSD-2").child(tps).get()
+  for e in dat.each():
+    temps.append(e.key())
+print(temps, 'temps')
+for module, tps in zip(temps, dates):
+  tim = db.child("absence").child("IDSD-2").child(tps).child(module).get()
+  for e in tim.each():
+    modules.append(e.key())
+print(modules)
 """
-test = db.child("absence").child("IDSD-2").child("30-03-2021").get().key()
-print(test)
 
-  for temps in date:
-    for module in temps:
-      info = db.child("absence").child("IDSD-2").child(date).child(temps).child(module).get().val()
-      print(info)
+
+def getHoursProfPassed(sector):
+      absence, dates, temps, modules = 0, [], [], []
+      Sector = db.child("absence").child(sector).get()
+      for date in Sector.each():
+            dates.append(date.key())
+              
+      for tps in dates:
+            dat = db.child("absence").child(sector).child(tps).get()        
+            for e in dat.each():
+                  temps.append(e.key())          
+      
+      for module, tps in zip(temps, dates):
+            tim = db.child("absence").child(sector).child(tps).child(module).get()        
+            for e in tim.each():
+                  modules.append(e.key())          
+      
+      return modules
+      
+
+print(getHoursProfPassed('IDSD-2').count('Data Minig'))
+
+
+
+"""
+for student, module, tps in zip(modules, temps, dates):
+  stdn = db.child("absence").child("IDSD-2").child(tps).child(module).child(student).get()
+  if stdn.val() != None:
+    for e in stdn.each():
+      students.append(e.val())
+
+
+name = "QZIBRI-HIBA"
+for e in students:
+      if e == name:
+            absence += 1
+print(absence)
 """

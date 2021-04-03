@@ -309,7 +309,7 @@ def Absence_of_filiere(filiere):
     list_student_hours=absence_student().absence_dictionary(filiere)
     return render_template('list_absence.html',filiere=filiere,list_student_hours=list_student_hours)
 
-
+ 
 
 
 @app.route('/statistiques')
