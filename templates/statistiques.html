@@ -17,9 +17,15 @@
 
     <style>
     body {
+      height: 100%;
+      width: 100%;
+      background-image: url(/static/images/statistique.jpg);
+      background-size: cover;
+      
+      
+      background-repeat: no-repeat;
       font: 400 15px/1.8 Lato, sans-serif;
       color: #777;
-      background-color: rgb(243, 235, 235);
     }
     h3, h4 {
       margin: 10px 0 30px 0;
@@ -80,7 +86,7 @@
     .btn {
       padding: 10px 20px;
       background-color: #333;
-      color: #f1f1f1;
+      color: #784ddd;
       border-radius: 0;
       transition: .2s;
     }
@@ -169,46 +175,36 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>                        
         </button>
-        <a class="navbar-brand" href="#myPage">Logo</a>
+        
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#myPage">HOME</a></li>
-          <li><a href="#band">BAND</a></li>
-          <li><a href="#tour">TOUR</a></li>
-          <li><a href="#contact">CONTACT</a></li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">MORE
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Merchandise</a></li>
-              <li><a href="#">Extras</a></li>
-              <li><a href="#">Media</a></li> 
-            </ul>
-          </li>
-          <li><a href="#"><span class="glyphicon glyphicon-search"></span></a></li>
+          <li><a href="/"><span class="glyphicon glyphicon-log-out"></span></a></li>
         </ul>
       </div>
     </div>
   </nav>
 
 
-  <div style="border: black 2px solid; margin-top: 4%; width: 100%;" class="container">
+  <div style=" margin-top: 3.3%; width: 100%; background-color: rgba(138, 237, 240, 0.719);" class="container">
     <div class="row">
 
-      <div style="border: 2px solid red;  height: 50%;"  class="col-md-3 offset-md-3 my-5">               
-          <img style="width: 80%; height: 190px; "  src="/static/images/abdou.jpeg" class="img-circle" alt="">        
+      <div style=" height: 50%; margin-top: auto;"  class="col-md-3 offset-md-3 my-5">   <br>         
+          <img style="width: 80%; height: 7%; "  src="/static/images/abdou.jpeg" class="img-circle" alt="">        
       </div>
 
-      <div style="border: 2px solid green; " class="col-md-3 offset-md-3 my-5">               
-          <br>
-          <p>Full Name : Walid DAMOU</p>
-          <p>Sector : IDSD-2</p>
-          <p>Absence Rate : 12%</p>
-          <p>Number Of Hours : 8</p>        
+      <div style="left: -5%; color: black; font-size: large; font-family: 'Times New Roman', Times, serif;" class="col-md-3 offset-md-3 my-5">               
+          <br><br><br>
+          <ul style="width: 130%; ">
+            <li><b>Full Name :</b> {{studentName}}</li>
+            <li><b>Sector :</b>  {{sector}}</li>
+            <li><b>Absence Rate : </b> {{rate}}%</li>
+            <li><b>Number Of Hours :</b>  {{hours}}h </li>
+          </ul>
+               
       </div>
 
-      <div class="col-md-6 offset-md-3 my-5" >
+      <div class="col-md-6 offset-md-3 my-5" ><br>
         <canvas id="myChart"></canvas>
       </div>
       </div>
@@ -217,7 +213,7 @@
     </div>
   </div><br>
 
-  <div class="container">
+  <div class="container" style="background-color: rgba(138, 237, 240, 0.863);">
     <div  class="col-md-12 offset-md-3 my-5">
       <div class="card">        
         <div class="card-body">
@@ -231,7 +227,7 @@
 
     <script>
       var X={{names|safe}}
-      var Y={{donne|safe}}
+      var Y={{ donne|safe }}
       let ctx = document.getElementById('myChart').getContext('2d');
       let labels = X;
       let colorHex = ['#FB3640', '#EFCA08', '#43AA8B'];
@@ -278,39 +274,23 @@
 
 
 
-
+      var studentsNames = {{studentsNames|safe}}
+      var absenceHours = {{absenceHours|safe}}
+      var barBgColor = {{barBgColor|safe}}
+      var barBorderColor = {{barBorderColor|safe}}
+      
       var ctxBar = document.getElementById('myChartBar').getContext('2d');
       var myChartBar = new Chart(ctxBar, {
           type: 'bar',
 
           data: {
-              labels: ['ELAAROUB ', 'DAMOU ', 'ATANAN ', 'AMHAWN ', 'ELGARMAH ', 'BARABAD ', ' Abdellah', ' WAlid', ' Othmane', ' Yazid', ' Ghizlane', ' Souad'],
+              labels: studentsNames,
               datasets: [{
-                  label: '# of Votes',
-                  data: [12, 19, 3, 5, 2, 3, 12, 20, 3, 5, 22, 3],
-                  backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)',
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)'
-                  ],
-                  borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                      'rgba(255, 159, 64, 1)'
-                  ],
-                  borderWidth: 1
+                  label: 'Statistiques of Students',
+                  data: absenceHours,
+                  backgroundColor: barBgColor,
+                  borderColor: barBorderColor,
+                  borderWidth: 2
               }]
           },
           options: {
@@ -335,7 +315,8 @@
     <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
       <span class="glyphicon glyphicon-chevron-up"></span>
     </a><br><br>
-    <p>Bootstrap Theme Made By <a href="https://www.w3schools.com" data-toggle="tooltip" title="Visit w3schools">www.w3schools.com</a></p> 
+    <p>EL AAROUB Abdellah &nbsp;&nbsp;  -- &nbsp;&nbsp;  DAMOU Walid  </p>
+    <p>Project Graduation</p>
   </footer>
 
   <script>

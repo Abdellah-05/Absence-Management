@@ -302,7 +302,7 @@ for module, tps in zip(temps, dates):
 print(modules)
 """
 
-
+"""
 def getHoursProfPassed(sector):
       absence, dates, temps, modules = 0, [], [], []
       Sector = db.child("absence").child(sector).get()
@@ -326,7 +326,7 @@ print(getHoursProfPassed('IDSD-2').count('Data Minig'))
 
 
 
-"""
+
 for student, module, tps in zip(modules, temps, dates):
   stdn = db.child("absence").child("IDSD-2").child(tps).child(module).child(student).get()
   if stdn.val() != None:
@@ -340,3 +340,19 @@ for e in students:
             absence += 1
 print(absence)
 """
+import random
+
+def colors(nbr):
+  rateColor, rateBg, rgba = 0.6, 1, "rgba"
+  clrs, bgColor = [], []
+  for e in range(nbr) :
+    _1, _2, _3 = random.randint(50, 255), random.randint(50, 255), random.randint(50, 255),
+    col = (_1, _2, _3, rateColor)
+    bg = (_1, _2, _3, rateBg)
+    clrs.append(rgba + str(col))
+    bgColor.append(rgba + str(bg))
+  return clrs, bgColor
+
+
+p = [1,2,3,6,8]
+print(len(p))

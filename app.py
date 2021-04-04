@@ -5,7 +5,7 @@ from flask import Flask, render_template, request,Response, redirect, session
 import datetime
 from own_pc import Vidcamera1
 from management import absence_student , professor , TimeTable, Admin
-
+import random
 app = Flask(__name__)
 app.secret_key = 'ELAAROUB DAMOU'
 #app.config['UPLOAD_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\input_fold'
@@ -34,9 +34,6 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
-jourName = "Monday"
-minutes = "48"
-heur = "07"
 print(jourName, minutes, heur)
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -51,13 +48,13 @@ filierName= ""
 ProfName = ""
 
 #------------------------------function_database---------------------------# 
-def push_in_db(L,filiere):
+def push_in_db(L,filiere, matiereName):
     global absence
     etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
     for e in etudiants:
         if e not in L:
             absence.append(e)
-    db.child("absence").child(filiere).child(dateA).child(timeSeance).set(absence)
+    db.child("absence").child(filiere).child(dateA).child(timeSeance).child(matiereName).set(absence)
 
 
 #-- authentification
@@ -116,12 +113,13 @@ def Seance(mail, jour, temps):
 ### front page 
 @app.route('/home')
 def front_page():
-    global filierName
+    global filierName,matiereName
     if Seance(mailProf, jourName, timeSeance) == False :
         return redirect('/no_seance')
     
     matiereName, filierName, ProfName , SeanceTime = Seance(mailProf, jourName, timeSeance)
-     
+    session['matiereName'] = matiereName
+    session['Prof_Name'] = ProfName
     return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
 
 
@@ -134,14 +132,14 @@ def no_seance():
     for p in prf.each():
         if p.val()["E-mail"] == mailProf:
             nomProf = p.key()
-
+    session['Prof_Name'] = nomProf
     return render_template("no_seance.html" , Prof_name=nomProf)
 
 
 ### push in database 
 @app.route('/done')
 def push():
-    push_in_db(presence,filierName)
+    push_in_db(presence,filierName,matiereName)
     return render_template('home.html')
 
 ## for own computer camera processing
@@ -286,7 +284,6 @@ def EditProf():
             print("Warning to edit professor")
     return redirect('/admin')
 
-
 @app.route('/prof/<nameProf>')
 def DeleteProf(nameProf):
     print(nameProf, '---------------------')
@@ -302,21 +299,42 @@ def Absence(prof_name):
     print(filiers)
     return render_template('absence.html',filiers=filiers)
 
-@app.route('/Absence/list/<filiere>')
+@app.route('/Absence/list/<filiere>', )
 def Absence_of_filiere(filiere):
-    #absence=db.child('absence').child(name_filiere).get().val()
-    #print(absence)
-    list_student_hours=absence_student().absence_dictionary(filiere)
-    return render_template('list_absence.html',filiere=filiere,list_student_hours=list_student_hours)
+    
+    for day in ['Monday' , 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday'] :
+        for time in ['08-12' , '14-18'] :
+            a=db.child('Filiers_Emploi').child(filiere).child(day).child(time).get().val()
+            if a[1] == mailProf :
+                matiere = a[0]
+    session['matiereName'] = matiere
+    session['filiere'] = filiere
+    list_student_hours=absence_student().absence_dictionary(filiere , matiere)
+    session['studentsList'] = list_student_hours
+    session['sector'] = filiere
+   
+    return render_template('list_absence.html' , filiere=filiere , list_student_hours=list_student_hours)
 
- 
 
 
-@app.route('/statistiques')
-def statistiques():
-    names = ['abdou ', 'walid ', 'othmane']
-    donne = [30, 10, 40]
-    return render_template('statistiques.html', names = names, donne = donne)
+
+@app.route('/statistiques/<studentName>', methods = ['GET','POST'])
+def statistiques(studentName):
+    hours_passed = absence_student().getHoursProfPassed(session['sector'],session['matiereName'] )*3
+    hours_total = db.child('Profs').child(session['Prof_Name']).get().val()['Hours']
+    names = ['Absence', 'Presence', 'Remaininig hours']
+    donne = [session['studentsList'][studentName], hours_passed - session['studentsList'][studentName], hours_total-hours_passed]
+    session['studentsList']
+    rate= (session['studentsList'][studentName]*100) /(hours_passed)
+    studentsNames, absenceHours = [], []
+    for e in session['studentsList'].items():
+        studentsNames.append(e[0])
+        absenceHours.append(e[1])
+    print('----------- ||   ', len(studentsNames), studentsNames)
+    print('----------- >>   ', len(absenceHours), absenceHours)
+    barBgColor, barBorderColor = absence_student().colors(len(absenceHours))
+
+    return render_template('statistiques.html',studentsNames = studentsNames, absenceHours = absenceHours, barBgColor = barBgColor, barBorderColor = barBorderColor, names = names, donne = donne , studentName=studentName , sector = session['filiere'] , rate = rate ,hours=session['studentsList'][studentName])
 
 
 

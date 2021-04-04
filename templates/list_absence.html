@@ -183,9 +183,6 @@
 <div id="tour" class="bg-1">
   <div style=" width: 60%;" class="container"><br><br>
     <h3 class="text-center">Filiere : {{filiere}}</h3>
-    <p style="margin-left: 12%; text-decoration: underline red 4px;">Please write the numbre of hours until now : <input type="text" style="width: 35%; margin-left: 2%; background-color: rgba(0, 255, 221, 0.151);"></p>
-    <br>
-
     <div  class="row">
       <div class="col-sm-6">
         <b style="font-family: 'Times New Roman', Times, serif; font-size: large; text-shadow: 3px 3px 5px rgb(37, 62, 172);" >Full Name</b> 
@@ -207,13 +204,16 @@
               {{list_student_hours[s]}}
             </div>
             <div class="col-sm-1">
-              <button style="border-radius: 7px; right: 0%; height: 37px; background-color: rgba(28, 218, 28, 0.158);" class="btn btn-success pull-right" type="submit"  ><span class="fa fa-line-chart" ></span></button>
+              <a href="/statistiques/{{s}}">
+                <button style="border-radius: 7px; right: 0%; height: 37px; background-color: rgba(28, 218, 28, 0.158);" class="btn btn-success pull-right" type="submit"  ><span class="fa fa-line-chart" ></span></button>
+              </a>
             </div>
             
         </div>
         <hr><br>
       {%endfor%}
     
+       
   </div>
 </div>
 

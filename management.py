@@ -1,4 +1,5 @@
 import pyrebase
+import random
 firebaseConfig = {
     "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
     "authDomain": "absence-management-8e00e.firebaseapp.com",
@@ -48,26 +49,55 @@ class absence_student():
             dates_absences.append(d)
         return dates_absences
 
-    def list_absence(self,f_n,dates):
+    def list_absence(self,f_n,dates,matiereName):
         absence_global=[]
+        times=['08-12' , '14-18']
         for d in dates:
-            c=db.child('absence').child(f_n).child(d).get().val()
-            for n in (list(c.values())[0]):
-                absence_global.append(n)
+            for h in times:
+                c=db.child('absence').child(f_n).child(d).child(h).child(matiereName).get().val()
+                if c != None : 
+                    for n in c :
+                        absence_global.append(n)
         return absence_global
 
-    def absence_dictionary(self,f_n):
+    def absence_dictionary(self,f_n,matiereName):
         list_students=[]
         list_absences=[]
         d={}
         list_students=self.list_student(f_n)
         dates=self.dates_absence(f_n)
-        list_absences=self.list_absence(f_n,dates)
+        list_absences=self.list_absence(f_n,dates,matiereName)
         for n in list_students:
             d[n]=list_absences.count(n)*3
         return d
 
-print(absence_student().absence_dictionary('IDSD-2'))
+    def getHoursProfPassed(self,sector,m):
+        dates, temps, modules = [], [], []
+        Sector = db.child("absence").child(sector).get()
+        for date in Sector.each():
+            dates.append(date.key())
+        for tps in dates:
+            dat = db.child("absence").child(sector).child(tps).get()        
+            for e in dat.each():
+                temps.append(e.key())
+        for module, tps in zip(temps, dates):
+            tim = db.child("absence").child(sector).child(tps).child(module).get()        
+            for e in tim.each():
+                modules.append(e.key())    
+        return modules.count(m)
+    
+    def colors(self, nbr):
+        rateColor, rateBg, rgba = 0.6, 1, "rgba"      
+        clrs, bgColor = [], []
+        for e in range(nbr) :
+            _1, _2, _3 = random.randint(50, 255), random.randint(50, 255), random.randint(50, 255)
+            col = (_1, _2, _3, rateColor)
+            bg = (_1, _2, _3, rateBg)
+            clrs.append(rgba + str(col))
+            bgColor.append(rgba + str(bg))
+        return clrs, bgColor
+
+#print(absence_student().absence_dictionary('IDSD-2','Machine Learning'))
 #absence_student().delete_student('DAMOU-Walid','IDSD-2')
 #absence_student().add_student('walid','DAMOU','IDSD-2')
 
