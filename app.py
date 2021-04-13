@@ -34,6 +34,10 @@ heur = DATE.strftime("%H")
 minutes = DATE.strftime("%M")
 jourName = DATE.strftime("%A")
 
+jourName = "Monday"
+heur = "7"
+minutes = "50"
+
 print(jourName, minutes, heur)
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
@@ -75,7 +79,7 @@ def loginPost():
     try:
         auth.sign_in_with_email_and_password(email,password)
         mailProf = email
-    
+
         if Admin().getAdminInfo(mailProf) != False :
             return redirect('/admin')
         if Admin().getAdminInfo(mailProf) == False :
