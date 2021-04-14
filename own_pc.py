@@ -11,7 +11,6 @@ import imutils
 
 class Vidcamera1(object):
     def __init__(self):
-        print("[INFO] loading encodings...")
         self.data11 = pickle.loads(open('encodings.pickle', "rb").read())
         self.inti = dict(Counter(self.data11["names"]))
         self.inti['Unknown'] = 1
@@ -21,22 +20,16 @@ class Vidcamera1(object):
         self.clock = pygame.time.Clock()
         self.video = cv2.VideoCapture(0)
         self.pr=''
-        print(type(self.data11["encodings"]))
     
     ## processing the frame.
     def process_frame(self,frame1):
         frame=frame1
-        #print(type(frame))
         final_val=0
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
-        #print('1')
         face_names = []
         for face_encoding in face_encodings:
-            #print(type(data11))
-            # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(self.data11["encodings"], face_encoding)
-            #print(matches)
             name = "Unknown"
             # If a match was found in known_face_encodings, just use the first one.
             if True in matches:
@@ -45,12 +38,9 @@ class Vidcamera1(object):
                 for i in matchedIdxs:
                     name = self.data11["names"][i]
                     counts[name] = counts.get(name, 0) + 1
-                print(counts)
                 name = max(counts, key=counts.get)
                 final_val = counts[name]
             confidence_val = int((final_val/self.inti[name])*100)
-            print(confidence_val)
-            #print(face_locations)
             
             if confidence_val>90:
                 face_names.append(name+':'+str(confidence_val))
@@ -72,7 +62,7 @@ class Vidcamera1(object):
             if name.lower() != 'unknown':
                   Prenom = name.split('_')[0][0] + '.'
                   firstName = name.split('_')[0]
-                  print('----------------------------------------------------', name)
+                  print('----------------------------------------------------> ', name)
                   if name.split(':')[0] == 'unknown':
                         name = "unknown_unknown:" + name.split(':')[1]
                   Nom = name.split('_')[1].split(':')[0]
