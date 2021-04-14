@@ -216,7 +216,6 @@ def AddStudents(filiere_n):
 @app.route('/students/Edit/<filiere_n>/<name>', methods = ['GET','POST'])
 def EditStudents(filiere_n,name):
     if request.method=='POST':
-        print('post------------------')
         first_name=request.form.get('first_name')
         last_name=request.form.get('last_name')
     try:
