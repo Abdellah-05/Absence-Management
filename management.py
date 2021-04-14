@@ -97,12 +97,6 @@ class absence_student():
             bgColor.append(rgba + str(bg))
         return clrs, bgColor
 
-#print(absence_student().absence_dictionary('IDSD-2','Machine Learning'))
-#absence_student().delete_student('DAMOU-Walid','IDSD-2')
-#absence_student().add_student('walid','DAMOU','IDSD-2')
-
-#db.child('Filiers_Etudiants').child('IDSD-2').child('Etudiants').set(["DAMOU-Walid","ELAAROUB-Abdellah","ATANANE-Othman","ELGARMAH-Ghizlane","BARABADE-Souad","QZIBRI-HIBA","HAOUD-Ayoub","HIMMID-Brahim","ELHANAFI-Yassine","ZAKARA-Salah_eddinne"])
-
 
 class professor():
     
@@ -133,15 +127,11 @@ class professor():
         self.delete_professor(prof_name)
         self.add_professor(f_name,l_name,email,f_ensei)
 
-#professor().add_professor('khadija','sadik','k.sadik@gmail.com',['IDSD-2','GI-1','ER-2'])
-#professor().delete_professor('SADIK-Khadija')
-#professor().profs()
 
 class TimeTable():
 
     def dict_timetable(self,f_n):
         time_table=db.child('Filiers_Emploi').child(f_n).get().val()
-        #print(dict(time_table)['Friday']['08-12'][0])
         return dict(time_table)
 
     def edit_timetable(self,f_n,day,hour,subject):
@@ -152,8 +142,6 @@ class TimeTable():
     def delete_timetable(self,f_n):
         db.child('Filiers_Emploi').child(f_n).remove()
 
-#TimeTable().timetable('IDSD-2')
-#db.child('Filiers_Emploi').child("GE-2").child('Monday').set({'08-12':[' '],'14-18':[' ']})
 
 class Admin():
     def getAdminInfo(self, mail):

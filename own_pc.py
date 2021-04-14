@@ -44,15 +44,12 @@ class Vidcamera1(object):
             
             if confidence_val>90:
                 face_names.append(name+':'+str(confidence_val))
-                #if name not in self.pr and name.lower() != 'unknown':
-                 #   self.pr.append(name)
+                
             else:
                 face_names.append('Unknown1_Unknown:'+str(confidence_val))
         # Display the results
         for (top, right, bottom, left), name in zip(face_locations, face_names):
-            # Draw a box around the face
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-            # Draw a label with a name below the face
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
 
@@ -62,7 +59,7 @@ class Vidcamera1(object):
             if name.lower() != 'unknown':
                   Prenom = name.split('_')[0][0] + '.'
                   firstName = name.split('_')[0]
-                  print('----------------------------------------------------> ', name)
+                  print('--------------------> ', name)
                   if name.split(':')[0] == 'unknown':
                         name = "unknown_unknown:" + name.split(':')[1]
                   Nom = name.split('_')[1].split(':')[0]
@@ -81,24 +78,16 @@ class Vidcamera1(object):
           if self.timer < 1:
             success, data = self.video.read()
             frame = self.process_frame(data)
-            #print('recog_back')
-            #Set the timer back to 30:
+            
             self.timer = 0
           else:
-            #Count down the timer:
             self.timer -= 1
-          #We store the previous recieved image incase the client fails to recive all of the data for the new image:
           self.previousImage = self.image
           try:
             self.image = frame
           except:
-            #If we failed to recieve a new image we display the last image we revieved:
             self.image = self.previousImage
-          #Set the var output to our image:    
           output = self.image
-          #print('frame')
-          #We set our clock to tick 60 times a second, which limits the frame rate to that amount:
           self.clock.tick(1000)
-          #pygame.display.flip()
           ret, jpeg = cv2.imencode('.jpg', output)
           return jpeg.tobytes(), self.pr

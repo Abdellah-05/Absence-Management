@@ -5,9 +5,9 @@ from management import absence_student , professor , TimeTable, Admin
 import random
 app = Flask(__name__)
 app.secret_key = 'ELAAROUB DAMOU'
-
 import pyrebase
 
+# --  connextion au base de données FireBase
 firebaseConfig = {
     "apiKey": "AIzaSyCfhaX8-97PczmLPY5LxHdM8WyENToLov4",
     "authDomain": "absence-management-8e00e.firebaseapp.com",
@@ -33,11 +33,10 @@ jourName = "Monday"
 heur = "7"
 minutes = "50"
 
-print(jourName, minutes, heur)
+# --  initialization
 dateA = str(jour) + '-' + str(mois) + '-' + str(annee)
 timeA = str(heur) + 'h' + str(minutes)
 db = firebase.database()
-
 absence=[]
 timeSeance = ""
 presence = []
@@ -46,7 +45,7 @@ matiereName = ""
 filierName= ""
 ProfName = ""
 
-#------------------------------function_database---------------------------# 
+# ---  function_database
 def push_in_db(L,filiere, matiereName):
     global absence
     etudiants=db.child("Filiers_Etudiants").child(filiere).child("Etudiants").get().val()
@@ -64,13 +63,13 @@ auth = firebase.auth()
 def loginGet():    
    return render_template('login.html')
 
+# --   login route
 @app.route('/', methods = ['POST'] )
 def loginPost():
     global mailProf
     global timeSeance
     email = request.form['email']
     password = request.form['password']
-    #login_user(adminEmail)
     try:
         auth.sign_in_with_email_and_password(email,password)
         mailProf = email
@@ -89,7 +88,7 @@ def loginPost():
         return render_template('login.html')
 
 
-
+# --   verification d'éxistance de séance 
 def Seance(mail, jour, temps):
       filiersEmploi = db.child('Filiers_Emploi').get()
       prf = db.child("Profs").get()
@@ -112,7 +111,7 @@ def Seance(mail, jour, temps):
 
 
 
-
+# --   home route
 @app.route('/home')
 def front_page():
     global filierName,matiereName
@@ -126,7 +125,7 @@ def front_page():
 
 
 
-
+# --   no séance route
 @app.route('/no_seance')
 def no_seance():
     prf = db.child("Profs").get()
@@ -140,20 +139,20 @@ def no_seance():
 
 
 
-### push in database 
+# --   push in database 
 @app.route('/done')
 def push():
     push_in_db(presence,filierName,matiereName)
     return render_template('home.html')
 
 
-## for own computer camera processing
+# --  for own computer camera processing
 @app.route('/video_1')
 def index_1():
     return render_template('index.html')
 
 
-
+# --   vidéo streaming 
 def gen_1(camera):    
     while True:
         frame, vv = camera.framing()               
@@ -161,20 +160,14 @@ def gen_1(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         if vv not in presence and len(vv) > 6:        
             presence.append(vv) 
-    #db.child("absence").child(dateA).child(timeA).set(absence) 
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    print('video_feed method')
     aa=gen_1(Vidcamera1())
-      
-    print('video_feed method 2')
-    
     return Response(aa,mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-
-
+# --  administrateur route
 @app.route('/admin', methods = ['GET','POST'])
 def admin():
     filieres=absence_student().filieres()
@@ -192,7 +185,7 @@ def admin():
     return render_template('admin.html',filieres=filieres,profs=profs)
 
 
-
+# --  students route
 @app.route('/students', methods = ['GET','POST'])
 def Students():
     Fname_list=[]
@@ -206,7 +199,7 @@ def Students():
     return render_template('students.html',filiere_n=filiere_n,nombre_students=nombre_students,list_students=sorted(list_students),Fname_list=Fname_list,Lname_list=Lname_list)
 
 
-
+# --  add new student
 @app.route('/students/Add/<filiere_n>', methods = ['GET','POST'])
 def AddStudents(filiere_n):
     first_name=request.form.get('FName')
@@ -218,7 +211,7 @@ def AddStudents(filiere_n):
     return redirect('/admin')
 
 
-
+# --  edit student
 @app.route('/students/Edit/<filiere_n>/<name>', methods = ['GET','POST'])
 def EditStudents(filiere_n,name):
     if request.method=='POST':
@@ -231,11 +224,13 @@ def EditStudents(filiere_n,name):
     return redirect('/admin')
     
 
-
+# --  delete student
 @app.route('/students/delete/<filiere_n>/<name>', methods = ['GET','POST'])
 def deleteStudents(filiere_n,name):
     absence_student().delete_student(name , filiere_n)
     return redirect("/admin")
+
+# --  professor route
 @app.route('/prof', methods = ['GET','POST'])
 def Prof():
     global prof_name
@@ -252,7 +247,7 @@ def Prof():
     return render_template('prof.html',PrLastName=PrLastName, PrFirstName=PrFirstName, CSV_Filieres=CSV_Filieres, prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
 
 
-
+# --  time table route
 @app.route('/time_table', methods = ['GET','POST'])
 def time():
     global filiere_n
@@ -261,33 +256,30 @@ def time():
     return render_template('time_table.html',time_table=time_table,filiere_n=filiere_n)
 
 
-    
+# --  edit time table
 @app.route('/save_time', methods = ['POST'])
 def save_time():   
-    #print(filiere_n) _table=TimeTable().dict_timetable(filiere_n)
     day=request.form.get('day')
     hour=request.form.get('hour')
     subject=request.form.get('subject')
-    #print(day,hour,subject)
     TimeTable().edit_timetable(filiere_n,day,hour,subject)
     return redirect('/admin')
 
 
-
+# --  delete time table
 @app.route('/delete_time')
 def delete_time():  
     TimeTable().delete_timetable(filiere_n)
     print("Done")
     return redirect('/admin')
 
-
+# --  edit professor
 @app.route('/edit_prof', methods = ['GET','POST'])
 def EditProf():
     if request.method == "POST" :
         PrLastName = request.form.get('FName_')
         PrFirstName = request.form.get('LName_')
         filieres = request.form.get('courses_')
-        print(filieres, "-----------------------------------------")
         email = request.form.get('email_')
         coursesList = filieres.split(',')
         print(PrFirstName)
@@ -301,7 +293,7 @@ def EditProf():
     return redirect('/admin')
 
 
-
+# --  delete professor
 @app.route('/prof/<nameProf>')
 def DeleteProf(nameProf):
     print(nameProf, '---------------------')
@@ -312,14 +304,14 @@ def DeleteProf(nameProf):
     return render_template('admin.html')
 
 
-
+# --  get filiere enseignées par le professeur 
 @app.route('/Absence/<prof_name>')
 def Absence(prof_name):
     filiers=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
-    print(filiers)
     return render_template('absence.html',filiers=filiers)
 
 
+# --  list des apbsences 
 @app.route('/Absence/list/<filiere>', )
 def Absence_of_filiere(filiere):
     
@@ -338,7 +330,7 @@ def Absence_of_filiere(filiere):
 
 
 
-
+# --   statistiques des absences 
 @app.route('/statistiques/<studentName>', methods = ['GET','POST'])
 def statistiques(studentName):
     hours_passed = absence_student().getHoursProfPassed(session['sector'],session['matiereName'] )*3
@@ -353,11 +345,10 @@ def statistiques(studentName):
         absenceHours.append(e[1])
   
     barBgColor, barBorderColor = absence_student().colors(len(absenceHours))
-
     return render_template('statistiques.html',studentsNames = studentsNames, absenceHours = absenceHours, barBgColor = barBgColor, barBorderColor = barBorderColor, names = names, donne = donne , studentName=studentName , sector = session['filiere'] , rate = rate ,hours=session['studentsList'][studentName])
 
 
 
-
+# --  debuger mode
 if __name__ == '__main__':
    app.run(debug = True)
