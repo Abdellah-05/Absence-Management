@@ -250,14 +250,14 @@ db.child("Profs").child("ZAID-Lamia").set(Profs)
 """get F_name"""
 
 
-
+"""
 Admin = {
   "Nom" : "DAMOU",
   "Prenom" : "Walid",  
   "E-mail" : "walid.damou.2015@gmail.com",
   "Password" : "walididsd"
 }
-"""db.child("Admins").child("DAMOU-Walid").set(Admin)
+db.child("Admins").child("DAMOU-Walid").set(Admin)
 
 admins = db.child("Admins").get().val()
 for e in admins:
@@ -339,7 +339,7 @@ for e in students:
       if e == name:
             absence += 1
 print(absence)
-"""
+
 import random
 
 def colors(nbr):
@@ -356,3 +356,4 @@ def colors(nbr):
 
 p = [1,2,3,6,8]
 print(len(p))
+"""

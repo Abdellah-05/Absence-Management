@@ -333,8 +333,7 @@ def statistiques(studentName):
     for e in session['studentsList'].items():
         studentsNames.append(e[0])
         absenceHours.append(e[1])
-    print('----------- ||   ', len(studentsNames), studentsNames)
-    print('----------- >>   ', len(absenceHours), absenceHours)
+  
     barBgColor, barBorderColor = absence_student().colors(len(absenceHours))
 
     return render_template('statistiques.html',studentsNames = studentsNames, absenceHours = absenceHours, barBgColor = barBgColor, barBorderColor = barBorderColor, names = names, donne = donne , studentName=studentName , sector = session['filiere'] , rate = rate ,hours=session['studentsList'][studentName])
