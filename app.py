@@ -1,6 +1,3 @@
-## python -m http.server
-## from the output folder to open http on 8000 port
-
 from flask import Flask, render_template, request,Response, redirect, session
 import datetime
 from own_pc import Vidcamera1
@@ -8,8 +5,6 @@ from management import absence_student , professor , TimeTable, Admin
 import random
 app = Flask(__name__)
 app.secret_key = 'ELAAROUB DAMOU'
-#app.config['UPLOAD_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\input_fold'
-#app.config['OUTPUT_FOLDER'] = r'C:\Users\gurvinder1.singh\Downloads\Facial-Similarity-with-Siamese-Networks-in-Pytorch-master\data\output_fold'
 
 import pyrebase
 
@@ -94,6 +89,7 @@ def loginPost():
         return render_template('login.html')
 
 
+
 def Seance(mail, jour, temps):
       filiersEmploi = db.child('Filiers_Emploi').get()
       prf = db.child("Profs").get()
@@ -114,7 +110,9 @@ def Seance(mail, jour, temps):
               return False
       return False
 
-### front page 
+
+
+
 @app.route('/home')
 def front_page():
     global filierName,matiereName
@@ -125,6 +123,7 @@ def front_page():
     session['matiereName'] = matiereName
     session['Prof_Name'] = ProfName
     return render_template('home.html', matiereName = matiereName, filierName = filierName, ProfName = ProfName, SeanceTime = SeanceTime)
+
 
 
 
@@ -140,11 +139,13 @@ def no_seance():
     return render_template("no_seance.html" , Prof_name=nomProf)
 
 
+
 ### push in database 
 @app.route('/done')
 def push():
     push_in_db(presence,filierName,matiereName)
     return render_template('home.html')
+
 
 ## for own computer camera processing
 @app.route('/video_1')
@@ -191,6 +192,7 @@ def admin():
     return render_template('admin.html',filieres=filieres,profs=profs)
 
 
+
 @app.route('/students', methods = ['GET','POST'])
 def Students():
     Fname_list=[]
@@ -203,6 +205,8 @@ def Students():
         Lname_list.append(n.split('-')[0])
     return render_template('students.html',filiere_n=filiere_n,nombre_students=nombre_students,list_students=sorted(list_students),Fname_list=Fname_list,Lname_list=Lname_list)
 
+
+
 @app.route('/students/Add/<filiere_n>', methods = ['GET','POST'])
 def AddStudents(filiere_n):
     first_name=request.form.get('FName')
@@ -212,6 +216,8 @@ def AddStudents(filiere_n):
     except:
         print('erreur')
     return redirect('/admin')
+
+
 
 @app.route('/students/Edit/<filiere_n>/<name>', methods = ['GET','POST'])
 def EditStudents(filiere_n,name):
@@ -224,6 +230,8 @@ def EditStudents(filiere_n,name):
         print('erreur in edit')
     return redirect('/admin')
     
+
+
 @app.route('/students/delete/<filiere_n>/<name>', methods = ['GET','POST'])
 def deleteStudents(filiere_n,name):
     absence_student().delete_student(name , filiere_n)
@@ -243,13 +251,16 @@ def Prof():
         CSV_Filieres = CSV_Filieres + "," + filieres[f]        
     return render_template('prof.html',PrLastName=PrLastName, PrFirstName=PrFirstName, CSV_Filieres=CSV_Filieres, prof_name=prof_name,email=email,filieres=filieres, firstNameOf_Prof = firstNameOf_Prof)
 
+
+
 @app.route('/time_table', methods = ['GET','POST'])
 def time():
     global filiere_n
     filiere_n=request.form.get('searching_timetable')
     time_table=TimeTable().dict_timetable(filiere_n)
     return render_template('time_table.html',time_table=time_table,filiere_n=filiere_n)
-      
+
+
     
 @app.route('/save_time', methods = ['POST'])
 def save_time():   
@@ -260,6 +271,8 @@ def save_time():
     #print(day,hour,subject)
     TimeTable().edit_timetable(filiere_n,day,hour,subject)
     return redirect('/admin')
+
+
 
 @app.route('/delete_time')
 def delete_time():  
@@ -287,6 +300,8 @@ def EditProf():
             print("Warning to edit professor")
     return redirect('/admin')
 
+
+
 @app.route('/prof/<nameProf>')
 def DeleteProf(nameProf):
     print(nameProf, '---------------------')
@@ -296,11 +311,14 @@ def DeleteProf(nameProf):
         print('Warning in delete professor')
     return render_template('admin.html')
 
+
+
 @app.route('/Absence/<prof_name>')
 def Absence(prof_name):
     filiers=db.child('Profs').child(prof_name).child('FiliersEnseignes').get().val()
     print(filiers)
     return render_template('absence.html',filiers=filiers)
+
 
 @app.route('/Absence/list/<filiere>', )
 def Absence_of_filiere(filiere):
